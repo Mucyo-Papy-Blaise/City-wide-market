@@ -1,0 +1,25 @@
+name: Deploy Develop (Test)
+
+on:
+  push:
+    branches:
+      - develop
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: npm install  # Change this if needed
+
+      - name: Build Project
+        run: npm run build  # Change this if needed
+
+      - name: Deploy to Test Environment
+        run: |
+          echo "Deploying to test server..."
+          # Add your deployment script (e.g., upload files via SSH or deploy to Netlify/Vercel)
