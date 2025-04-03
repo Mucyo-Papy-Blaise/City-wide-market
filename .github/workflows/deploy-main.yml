@@ -1,0 +1,25 @@
+name: Deploy Main (Live)
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v3
+
+      - name: Install Dependencies
+        run: npm install  # Change this if needed
+
+      - name: Build Project
+        run: npm run build  # Change this if needed
+
+      - name: Deploy to Live Server
+        run: |
+          echo "Deploying to production..."
+          # Add deployment script (e.g., upload files to server)
