@@ -49,7 +49,7 @@ const NavBar: React.FC = () => {
           {navLinks.map((link) => (
             <div
               key={link.id}
-              className={`md:flex hidden relative justify-center items-center space-x-1 cursor-pointer hover:text-terracotta ${
+              className={`md:flex hidden relative justify-center items-center space-x-1 cursor-pointer hover:text-terracotta z-20 ${
                 activeLink === link.id ? "text-terracotta" : ""
               }`}
               onClick={() => {
