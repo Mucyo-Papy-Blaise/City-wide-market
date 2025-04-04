@@ -83,7 +83,7 @@ const NavBar: React.FC = () => {
         
 
         {isMobileOpen && (
-            <div className="block md:hidden absolute right-5 top-10 bg-charcoal w-36 p-3 rounded-b-md text-white">
+            <div className="block md:hidden absolute right-5 top-10 bg-charcoal w-36 p-3 rounded-b-md text-white z-50">
                 {navLinks.map((link)=>
                 <div key={link.id}
                 className={`p-2 flex relative${
