@@ -109,8 +109,9 @@ const Home: React.FC = () => {
       </div>
 
       {/* Service Part */}
-      <div className="bg-charcoal w-full p-5">
-        <div className="flex flex-row gap-3 md:gap-10 md:max-w-[1250px] m-auto overflow-y-auto no-scrollbar">
+      <div className="bg-charcoal flex flex-row justify-center items-center w-full gap-3 p-5">
+      {isMobileOpen && <ArrowLeftCircleIcon className="w-8 h-8 text-black flex md:hidden"/>}
+        <div className="flex flex-row items-center gap-3 md:gap-10 md:max-w-[1250px] m-auto overflow-y-auto no-scrollbar"> 
           {ServiceDetails.map((service, index) => (
             <div
               key={index}
@@ -125,6 +126,7 @@ const Home: React.FC = () => {
             </div>
           ))}
         </div>
+        {isMobileOpen && <ArrowRightCircleIcon className="w-8 h-8 text-white flex md:hidden"/>}
       </div>
       
       {selectedService && (
