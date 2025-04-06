@@ -1,7 +1,8 @@
 import React, { JSX } from "react";
 import { useState,useRef } from "react";
+import { useNavigate } from "react-router-dom";
 import consimage1 from "../assets/construction1.jpg";
-import { CardDetails,Choose,footerLinks } from "../Data/Data.ts";
+import { CardDetails,Choose } from "../Data/Data.ts";
 import { HardHat, PencilRuler, Hammer,ArrowRightCircle,X,ArrowRightCircleIcon,ArrowLeftCircleIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import engineer from '../assets/workers.png'
@@ -16,6 +17,7 @@ const Home: React.FC = () => {
 
   const [selectedService, setSelectedService] = useState<serviceProps | null>(null)
   const scrollRef = useRef<HTMLDivElement>(null)
+  const navigate = useNavigate()
 
 
   const ServiceDetails : serviceProps[] = [
@@ -81,7 +83,10 @@ const Home: React.FC = () => {
           </div>
 
           <div className="flex flex-row text-white mt-8 gap-10 md:gap-20">
-            <button className="p-[10px] bg-teal rounded-[5px] text-[15px] cursor-pointer hover:bg-[#4dbcaf]">
+            <button 
+            className="p-[10px] bg-teal rounded-[5px] text-[15px] cursor-pointer hover:bg-[#4dbcaf]"
+            onClick={()=> navigate('/Designs')}
+            >
               Explore Design
             </button>
             <button className="p-[10px] bg-terracotta rounded-[5px] text-[15px] cursor-pointer hover:bg-[#db816a]">
@@ -215,41 +220,6 @@ const Home: React.FC = () => {
           <div className="flex flex-row gap-3 bg-teal p-2 w-48 justify-center items-center rounded hover:bg-[#4dbcaf]">
             <button className="text-white text-[15px]">Contact Us</button>
             <ArrowRightCircle className="text-white text-[15px] "/>
-          </div>
-        </div>
-      </div>
-
-      {/* Footer Links Part */}
-      <div className="bg-softCream flex flex-col md:flex-row justify-between max-w-[1250px] m-auto md:mt-5 p-5 ">
-        {footerLinks.map((footerLink, index)=>
-          <div 
-          key={index}
-          className="flex flex-col gap-1 md:gap-2"
-          >
-            <h1 className="text-charcoal font-bold text-[20px] mb-2 md:mb-3">{footerLink.title}</h1>
-            {footerLink.links.map((link, index)=>
-              <div 
-              key={index}
-              className="flex flex-col text-[13px] text-lightGray font-thin hover:underline hover:text-terracotta"
-              >
-                <a href="">{link}</a>
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-
-        {/* Line Part */}
-      <div className="w-full h-[1px] bg-[#a2a2a2] mt-2 md:mt-10"/>
-
-        {/* Footer Part */}
-      <div className="flex flex-col mt-3 max-w-[1250px] m-auto pb-3 md:pl-0 pl-5">
-        <div className="flex flex-col justify-start md:justify-between gap-2">
-          <p className="text-[13px] text-charcoal">&copy;{new Date().getFullYear()} CWM CITY WIDE MARKET. All rights reserved</p>
-          <div className="flex flex-row gap-5 text-[13px] text-charcoal">
-            <p className="hover:text-terracotta underline cursor-pointer">Terms</p>
-            <p className="hover:text-terracotta underline cursor-pointer">Privacy</p>
-            <p className="hover:text-terracotta underline cursor-pointer">Cookies</p>
           </div>
         </div>
       </div>

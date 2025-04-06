@@ -1,4 +1,5 @@
 import React, { useState, useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import logo from "../assets/City-wide.png";
 import { Menu, X, ChevronDown, ChevronUp, Search } from "lucide-react";
 
@@ -20,39 +21,48 @@ const navLinks = [
 ];
 
 const NavBar: React.FC = () => {
+  const navigate = useNavigate()
   const [activeLink, setActiveLink] = useState<number | null>(null);
   const [isMaterialOpen, setIsMaterialOpen] = useState<boolean>(false);
   const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false);
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const dropDownRef = useRef<HTMLDivElement>(null);
+  const materialsRef = useRef<HTMLDivElement>(null)
 
   const toggleMobile = () => {
     setIsMobileOpen(!isMobileOpen);
   };
 
   useEffect(() => {
+
+    if(!isMaterialOpen) return;
+
     const handleClickOutside = (e: MouseEvent) => {
       if (
-        dropDownRef.current &&
-        !dropDownRef.current.contains(e.target as Node)
+        dropDownRef.current && !dropDownRef.current.contains(e.target as Node) && 
+        materialsRef.current && !materialsRef.current.contains(e.target as Node)
       ) {
         setIsMaterialOpen(false)
       }
 
-      document.addEventListener("mousedown", handleClickOutside);
-
-      return document.addEventListener("mousedown", handleClickOutside);
+      setTimeout(()=>{
+        document.addEventListener("mousedown", handleClickOutside)
+      },10)
     };
-  },);
+    return (
+      document.addEventListener("mousedown", handleClickOutside)
+    )
+  },[isMaterialOpen]);
 
   return (
-    <div className="w-full md:p-4 p-2 bg-charcoal ">
+    <div className="w-full md:p-4 p-2 bg-charcoal relative">
       <div className="flex flex-row items-center justify-between md:max-w-[1250px] max-w-[350px] mx-auto font-poppins">
         <div className="flex items-center gap-2">
           <img
+          onClick={() => navigate('/')}
             src={logo}
             alt="Logo Image"
-            className="md:w-32 md:h-8 w-16 h-4"
+            className="md:w-32 md:h-8 w-16 h-4 cursor-pointer"
           />
 
           <button
@@ -82,7 +92,7 @@ const NavBar: React.FC = () => {
           placeholder="Search here..."
         />
 
-        <div className="flex flex-row text-white gap-10"  ref={dropDownRef}>
+        <div className="flex flex-row text-white gap-10">
           <button onClick={toggleMobile} className="md:hidden">
             {isMobileOpen ? <X /> : <Menu />}
           </button>
@@ -101,7 +111,7 @@ const NavBar: React.FC = () => {
                   setIsMaterialOpen(false);
                 }
               }}
-             
+             ref={link.id === 3 ? materialsRef : null}
             >
               <span>{link.name}</span>
               {link.subLinks && (
@@ -111,7 +121,10 @@ const NavBar: React.FC = () => {
               )}
 
               {link.subLinks && isMaterialOpen && (
-                <div className="absolute left-0 top-full mt-2 w-48 bg-charcoal rounded-lg shadow-lg">
+                <div 
+                className="absolute left-0 top-full mt-2 w-48 bg-charcoal rounded-lg shadow-lg"
+                ref={dropDownRef}
+                >
                   {link.subLinks.map((sublink, index) => (
                     <div
                       key={index}
