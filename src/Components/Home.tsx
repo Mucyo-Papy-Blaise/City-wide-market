@@ -1,5 +1,5 @@
 import React, { JSX } from "react";
-import { useState } from "react";
+import { useState,useRef } from "react";
 import consimage1 from "../assets/construction1.jpg";
 import { CardDetails,Choose,footerLinks } from "../Data/Data.ts";
 import { HardHat, PencilRuler, Hammer,ArrowRightCircle,X,ArrowRightCircleIcon,ArrowLeftCircleIcon } from "lucide-react";
@@ -15,7 +15,7 @@ const Home: React.FC = () => {
   }
 
   const [selectedService, setSelectedService] = useState<serviceProps | null>(null)
-  const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false)
+  const scrollRef = useRef<HTMLDivElement>(null)
 
 
   const ServiceDetails : serviceProps[] = [
@@ -39,6 +39,19 @@ const Home: React.FC = () => {
       description:"We supply high-quality building materials that support long-lasting and energy-efficient construction. Our range includes cement, bricks, roofing, steel, insulation, and interior finishes—all carefully sourced to meet industry standards. Whether you're a contractor, builder, or DIY enthusiast, our materials ensure your project is built on a strong and sustainable foundation."
     },
   ];
+
+  const scrollLeft =()=>{
+    if(scrollRef.current){
+      scrollRef.current.scrollBy({left: -200, behavior: "smooth" })
+    }
+  }
+
+  const scrollRight = ()=>{
+    if(scrollRef.current){
+      scrollRef.current.scrollBy({left: 200, behavior: "smooth"})
+    }
+  }
+
 
   return (
     <div className="w-full min-h-scree font-poppins">
@@ -109,9 +122,14 @@ const Home: React.FC = () => {
       </div>
 
       {/* Service Part */}
-      <div className="bg-charcoal flex flex-row justify-center items-center w-full gap-3 p-5">
-      {isMobileOpen && <ArrowLeftCircleIcon className="w-8 h-8 text-black flex md:hidden"/>}
-        <div className="flex flex-row items-center gap-3 md:gap-10 md:max-w-[1250px] m-auto overflow-y-auto no-scrollbar"> 
+      <div className="bg-charcoal flex flex-row justify-center items-center w-full gap-2 md:p-5 p-3">
+          <ArrowLeftCircleIcon 
+          className="w-10 h-10 text-white flex md:hidden cursor-pointer hover:text-terracotta" 
+          onClick={scrollLeft}/>
+        <div 
+        ref={scrollRef}
+        className="flex flex-row items-center gap-3 md:gap-10 md:max-w-[1250px] m-auto overflow-y-auto no-scrollbar"
+        > 
           {ServiceDetails.map((service, index) => (
             <div
               key={index}
@@ -126,7 +144,9 @@ const Home: React.FC = () => {
             </div>
           ))}
         </div>
-        {isMobileOpen && <ArrowRightCircleIcon className="w-8 h-8 text-white flex md:hidden"/>}
+        <ArrowRightCircleIcon 
+        className="w-10 h-10 text-white flex md:hidden cursor-pointer hover:text-terracotta" 
+        onClick={scrollRight}/>
       </div>
       
       {selectedService && (
