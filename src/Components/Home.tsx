@@ -1,33 +1,63 @@
-import React from "react";
+import React, { JSX } from "react";
+import { useState,useRef } from "react";
 import consimage1 from "../assets/construction1.jpg";
 import { CardDetails,Choose,footerLinks } from "../Data/Data.ts";
-import { HardHat, PencilRuler, Hammer,ArrowRightCircle } from "lucide-react";
+import { HardHat, PencilRuler, Hammer,ArrowRightCircle,X,ArrowRightCircleIcon,ArrowLeftCircleIcon } from "lucide-react";
 import { motion } from "framer-motion";
 import engineer from '../assets/workers.png'
 
 const Home: React.FC = () => {
-  const ServiceDetails = [
+  interface serviceProps {
+  title: string;
+  subTitle: string;
+  icon: JSX.Element;
+  description: string;
+  }
+
+  const [selectedService, setSelectedService] = useState<serviceProps | null>(null)
+  const scrollRef = useRef<HTMLDivElement>(null)
+
+
+  const ServiceDetails : serviceProps[] = [
     {
       title: "Construction Service",
-      desc: "Implementation of Projects",
-      icon: <HardHat className="w-8 h-8 tex-charcoal" />,
+      subTitle: "Implementation of Projects",
+      icon: <HardHat className="w-4 h-4 md:w-8 md:h-8 text-charcoal" />,
+      description:"We offer professional construction services tailored to meet the specific needs of residential, commercial, and industrial projects. From the initial ground-breaking to the final finishing touches, our skilled team ensures quality craftsmanship, timely delivery, and adherence to safety standards. Whether it’s new construction, renovations, or expansions, we bring your vision to life with precision and reliability."
+      
     },
     {
       title: "Architecture Service",
-      desc: "Design and Planning",
-      icon: <PencilRuler className="w-8 h-8 text-charcoal" />,
+      subTitle: "Design and Planning",
+      icon: <PencilRuler className="w-4 h-4 md:w-8 md:h-8 text-charcoal" />,
+      description: "Our architecture services blend creativity, functionality, and innovation to design spaces that inspire and endure. We work closely with clients to develop customized plans that reflect their lifestyle, business goals, or community needs. From concept development to detailed blueprints and 3D modeling, we provide solutions that are both aesthetically pleasing and structurally sound."
     },
     {
       title: "Building Materials",
-      desc: "Supply of Quality Materials",
-      icon: <Hammer className="w-8 h-8 text-charcoal" />,
+      subTitle: "Supply of Quality Materials",
+      icon: <Hammer className="w-4 h-4 md:w-8 md:h-8 text-charcoal" />,
+      description:"We supply high-quality building materials that support long-lasting and energy-efficient construction. Our range includes cement, bricks, roofing, steel, insulation, and interior finishes—all carefully sourced to meet industry standards. Whether you're a contractor, builder, or DIY enthusiast, our materials ensure your project is built on a strong and sustainable foundation."
     },
   ];
-  8;
+
+  const scrollLeft =()=>{
+    if(scrollRef.current){
+      scrollRef.current.scrollBy({left: -200, behavior: "smooth" })
+    }
+  }
+
+  const scrollRight = ()=>{
+    if(scrollRef.current){
+      scrollRef.current.scrollBy({left: 200, behavior: "smooth"})
+    }
+  }
+
 
   return (
     <div className="w-full min-h-scree font-poppins">
-      <div className="w-full h-80 bg-blue-600 relative overflow-hidden">
+
+      {/* Image Part */}
+      <div className="w-full md:h-80 h-60 bg-blue-600 relative overflow-hidden">
         <img
           src={consimage1}
           alt="constructio-image"
@@ -38,19 +68,19 @@ const Home: React.FC = () => {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute top-12 left-36 transform -translate-x-1/2 w-full max-w-[1250px] mx-auto flex flex-col"
+          className="absolute top-6 md:top-12 left-6 md:left-36 transform -translate-x-1/2 w-full max-w-[350px] md:max-w-[1250px] mx-auto flex flex-col"
         >
           <p className="text-white text-[15px] mb-3">
             Welcome to CityWide Market
           </p>
           <div className="max-w-[380px]">
-            <p className="text-[35px] text-white font-bold">
+            <p className="md:text-[35px] text-[25px] text-white font-bold">
               Your <span className="text-terracotta">Gateway to</span> Smart
               Construction
             </p>
           </div>
 
-          <div className="flex flex-row text-white mt-8 gap-20">
+          <div className="flex flex-row text-white mt-8 gap-10 md:gap-20">
             <button className="p-[10px] bg-teal rounded-[5px] text-[15px] cursor-pointer hover:bg-[#4dbcaf]">
               Explore Design
             </button>
@@ -61,13 +91,14 @@ const Home: React.FC = () => {
         </motion.div>
       </div>
 
-      <div className="bg-softCream flex flex-col max-w-[1250px] m-auto pb-10">
+      {/* Projects Part */}
+      <div className="bg-softCream flex flex-col max-w-[380px] md:max-w-[1250px] m-auto p-2 md:p-0 pb-10">
         <div className="mt-5">
-          <h1 className="text-charcoal font-bold text-[20px]">
+          <h1 className="text-charcoal font-bold text-[18px] md:text-[20px]">
             The Architecture & Construction Marketplace
           </h1>
 
-          <div className="grid grid-cols-3 mt-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 mt-8 gap-10 pb-10">
             {CardDetails.map((card, index) => (
               <div
                 key={index}
@@ -90,33 +121,65 @@ const Home: React.FC = () => {
         </div>
       </div>
 
-      <div className="bg-charcoal w-full p-5">
-        <div className="flex flex-row gap-8 max-w-[1250px] m-auto">
+      {/* Service Part */}
+      <div className="bg-charcoal flex flex-row justify-center items-center w-full gap-2 md:p-5 p-3">
+          <ArrowLeftCircleIcon 
+          className="w-10 h-10 text-white flex md:hidden cursor-pointer hover:text-terracotta" 
+          onClick={scrollLeft}/>
+        <div 
+        ref={scrollRef}
+        className="flex flex-row items-center gap-3 md:gap-10 md:max-w-[1250px] m-auto overflow-y-auto no-scrollbar"
+        > 
           {ServiceDetails.map((service, index) => (
             <div
               key={index}
-              className="bg-softCream w-[375px] h-16 rounded flex items-center cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-sunshineYellow"
+              className="bg-softCream min-w-[200px] w-[200px] md:w-[375px] h-16 rounded flex items-center cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-sunshineYellow"
+              onClick={() => setSelectedService(service)}
             >
-              <p className="text-black p-4">{service.icon}</p>
+              <p className="p-2 md:p-4 ">{service.icon}</p>
               <div className="flex flex-col">
-                <p className="text-charcoal font-bold ">{service.title}</p>
-                <p className="text-lightGray text-[12px]">{service.desc}</p>
+                <p className="text-charcoal font-bold text-[14px] md:text-[20px]">{service.title}</p>
+                <p className="text-lightGray text-[12px]">{service.subTitle}</p>
               </div>
             </div>
           ))}
         </div>
+        <ArrowRightCircleIcon 
+        className="w-10 h-10 text-white flex md:hidden cursor-pointer hover:text-terracotta" 
+        onClick={scrollRight}/>
       </div>
+      
+      {selectedService && (
+        <div className="bg-black w-full min-h-screen fixed inset-0 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-softCream w-[400px] p-6 rounded-lg shadow-lg relative">
+            <button className="absolute top-2 right-3 text-white text-xl bg-terracotta p-1 rounded-full"
+            onClick={() => setSelectedService(null)}
+            >
+              <X className="w-4 h-4"/>
+            </button>
 
+            <div className="flex flex-col items-start gap-3">
+              <div className="text-charcoal text-[20px]">{selectedService.icon}</div>
+              <h1 className="text-[20px] font-bold text-charcoal">{selectedService.subTitle}</h1>
+              <p className="text-[15px] font-semibold text-terracotta">{selectedService.subTitle}</p>
+              <p className="text-[12px] font-normal text-lightGray">{selectedService.description}</p>
+            </div> 
+          </div>
+        </div>
+      )}
+
+      {/* About Part */}
       <motion.div 
         initial={{ opacity: 0, y: 50 }}
         whileInView={{ opacity: 1, x: 0 }} 
         transition={{ duration: 1.5, ease: "easeOut" }}
         viewport={{ once: true, amount: 0.4 }}
-      className="bg-softCream flex flex-row space-x-64 max-w-[1250px] m-auto"
+      className="bg-softCream flex flex-row"
       >
-      <div className="flex flex-col mt-10 gap-5">
+      <div className="flex flex-row -mt-5 md:mt-10 max-w-[1250px] m-auto md:space-x-72 md:pr-8">
+      <div className="flex flex-col gap-3 md:gap-5 sm:pl-0 pl-5">
       <h1 className="text-charcoal font-bold text-[25px]">About Us</h1>
-        <p className="max-w-[600px] text-[15px] text-lightGray">
+        <p className="max-w-[600px] md:w-[600px] w-[360px] text-[15px] text-lightGray">
           City Wide Market is a premier platform dedicated to architecture,
           structural design, and the implementation of construction projects. We
           connect clients with top-tier professionals and resources, ensuring
@@ -125,14 +188,17 @@ const Home: React.FC = () => {
           into reality—creating modern, efficient, and sustainable spaces
         </p>
       </div>
-      <img src={engineer} alt="Engineer Image" className="w-80 h-80"/>
+        <img src={engineer} alt="Engineer Image" className="w-80 h-80 md:block hidden"/>
+      </div>
+      
       </motion.div>
 
-      <div className="bg-softCream flex flex-col mt-20 max-w-[1250px] m-auto">
+      {/* Why choose Us part */}
+      <div className="bg-softCream flex flex-col mt-16 md:mt-20 max-w-[1250px] m-auto p-5">
         <h1 className="text-charcoal text-[20px] font-bold">Why Choose City Wide Market?</h1>
-          <div className="flex flex-row gap-5 mt-10">
+          <div className="flex flex-col md:flex-row gap-5 mt-10">
           {Choose.map((choose,index)=>
-            <div key={index} className="bg-softCream flex flex-col gap-4 w-96 p-4 border-2 border-teal rounded">
+            <div key={index} className="bg-softCream flex flex-col gap-4 w-[350px] md:w-96 p-4 border-2 border-teal rounded">
               <h1 className="text-charcoal font-bold text-[15px]">{choose.title}</h1>
               <p className="text-lightGray text-[15px]">{choose.description}</p>
             </div>
@@ -140,25 +206,27 @@ const Home: React.FC = () => {
           </div>
       </div>
 
-      <div className="bg-charcoal w-full p-3 mt-10 ">
-        <div className="max-w-[1250px] m-auto flex flex-col jus items-center gap-5">
+      {/* Contact Part */}
+      <div className="bg-charcoal w-full p-3 mt-5 md:mt-10 ">
+        <div className="max-w-[1250px] m-auto flex flex-col jus items-center gap-2 md:gap-5">
           <h1 className="text-white font-bold text-[20px]">Ready to Start Your Project?</h1>
           <p className="text-[13px] text-white font-thin text-center max-w-[500px]">Contact our team of experts to discuss your needs and get started on your dream home today</p>
           
-          <div className="flex flex-row gap-3 bg-teal p-2 w-48 justify-center items-center rounded hover:bg-[#4dbcaf] ">
-          <button className="text-white text-[15px] hover:text-terracotta">Contact Us</button>
-          <ArrowRightCircle className="text-white text-[15px] cursor-pointer hover:text-terracotta"/>
+          <div className="flex flex-row gap-3 bg-teal p-2 w-48 justify-center items-center rounded hover:bg-[#4dbcaf]">
+            <button className="text-white text-[15px]">Contact Us</button>
+            <ArrowRightCircle className="text-white text-[15px] "/>
           </div>
         </div>
       </div>
 
-      <div className="bg-softCream flex flex-row justify-between max-w-[1100px] m-auto mt-10 ">
+      {/* Footer Links Part */}
+      <div className="bg-softCream flex flex-col md:flex-row justify-between max-w-[1250px] m-auto md:mt-5 p-5 ">
         {footerLinks.map((footerLink, index)=>
           <div 
           key={index}
-          className="flex flex-col gap-2"
+          className="flex flex-col gap-1 md:gap-2"
           >
-            <h1 className="text-charcoal font-bold text-[20px] mb-3">{footerLink.title}</h1>
+            <h1 className="text-charcoal font-bold text-[20px] mb-2 md:mb-3">{footerLink.title}</h1>
             {footerLink.links.map((link, index)=>
               <div 
               key={index}
@@ -171,10 +239,12 @@ const Home: React.FC = () => {
         )}
       </div>
 
-      <div className="w-full h-[1px] bg-[#a2a2a2] mt-10"/>
+        {/* Line Part */}
+      <div className="w-full h-[1px] bg-[#a2a2a2] mt-2 md:mt-10"/>
 
-      <div className="flex flex-col mt-3 max-w-[1100px] m-auto pb-3">
-        <div className="flex justify-between">
+        {/* Footer Part */}
+      <div className="flex flex-col mt-3 max-w-[1250px] m-auto pb-3 md:pl-0 pl-5">
+        <div className="flex flex-col justify-start md:justify-between gap-2">
           <p className="text-[13px] text-charcoal">&copy;{new Date().getFullYear()} CWM CITY WIDE MARKET. All rights reserved</p>
           <div className="flex flex-row gap-5 text-[13px] text-charcoal">
             <p className="hover:text-terracotta underline cursor-pointer">Terms</p>
