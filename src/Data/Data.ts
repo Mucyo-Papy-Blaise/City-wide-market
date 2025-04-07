@@ -1,6 +1,9 @@
 import finished from '../assets/Finished House.jpg'
 import structured from '../assets/arch house.jpg'
 import materials from '../assets/materials.jpg'
+import interiorImg from '../assets/Interior.jpg'
+import exteriorImg from '../assets/Exterior.webp'
+import frontImg from '../assets/Front.jpg'
 
 export const CardDetails = [
     {
@@ -50,5 +53,89 @@ export const footerLinks = [
         title: "Contact",
         links: ["123 Architecture","Building City, AC 12345","Email: info@acmearchitecture.com","+250 780 250 987"]
         
+    },
+]
+
+export const DesignCards = [
+    {
+        id:1,
+        image: interiorImg,
+        type: "Modern",
+        title: "Modern Minimalist Villa",
+        bedRoom: "3 Bed Rooms",
+        subDescr: "A sleek, minimalist design with open spaces and large windows.",
+        price: "12,000 FRW"
+    },
+    {
+        id:2,
+        image: exteriorImg,
+        type: "Modern",
+        title: "Modern Minimalist Villa",
+        bedRoom: "3 Bed Rooms",
+        subDescr: "A sleek, minimalist design with open spaces and large windows.",
+        price: "12,000 FRW"
+    },
+    {
+        id:3,
+        image: frontImg,
+        type: "Modern",
+        title: "Modern Minimalist Villa",
+        bedRoom: "3 Bed Rooms",
+        subDescr: "A sleek, minimalist design with open spaces and large windows.",
+        price: "12,000 FRW"
+    },
+    {
+        id:4,
+        image: exteriorImg,
+        type: "Modern",
+        title: "Modern Minimalist Villa",
+        bedRoom: "3 Bed Rooms",
+        subDescr: "A sleek, minimalist design with open spaces and large windows.",
+        price: "12,000 FRW"
+    },
+    {
+        id:5,
+        image: interiorImg,
+        type: "Modern",
+        title: "Modern Minimalist Villa",
+        bedRoom: "3 Bed Rooms",
+        subDescr: "A sleek, minimalist design with open spaces and large windows.",
+        price: "12,000 FRW"
+    },
+    {
+        id:6,
+        image: frontImg,
+        type: "Modern",
+        title: "Modern Minimalist Villa",
+        bedRoom: "3 Bed Rooms",
+        subDescr: "A sleek, minimalist design with open spaces and large windows.",
+        price: "12,000 FRW"
+    },
+    {
+        id:7,
+        image: interiorImg,
+        type: "Modern",
+        title: "Modern Minimalist Villa",
+        bedRoom: "3 Bed Rooms",
+        subDescr: "A sleek, minimalist design with open spaces and large windows.",
+        price: "12,000 FRW"
+    },
+    {
+        id:8,
+        image: exteriorImg,
+        type: "Modern",
+        title: "Modern Minimalist Villa",
+        bedRoom: "3 Bed Rooms",
+        subDescr: "A sleek, minimalist design with open spaces and large windows.",
+        price: "12,000 FRW"
+    },
+    {
+        id:9,
+        image: interiorImg,
+        type: "Modern",
+        title: "Modern Minimalist Villa",
+        bedRoom: "3 Bed Room",
+        subDescr: "A sleek, minimalist design with open spaces and large windows.",
+        price: "12,000 FRW"
     },
 ]
