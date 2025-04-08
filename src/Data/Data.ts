@@ -62,33 +62,33 @@ export const DesignCards = [
         image: interiorImg,
         type: "Modern",
         title: "Modern Minimalist Villa",
-        bedRoom: "3 Bed Rooms",
+        bedRoom: "2 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
         price: "12,000 FRW"
     },
     {
         id:2,
         image: exteriorImg,
-        type: "Modern",
-        title: "Modern Minimalist Villa",
-        bedRoom: "3 Bed Rooms",
+        type: "Rustic",
+        title: "Rustic Countryside Home",
+        bedRoom: "1 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
         price: "12,000 FRW"
     },
     {
         id:3,
         image: frontImg,
-        type: "Modern",
-        title: "Modern Minimalist Villa",
-        bedRoom: "3 Bed Rooms",
+        type: "Urban",
+        title: "Urban Loft Design",
+        bedRoom: "8 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
         price: "12,000 FRW"
     },
     {
         id:4,
         image: exteriorImg,
-        type: "Modern",
-        title: "Modern Minimalist Villa",
+        type: "Mediterranean",
+        title: "Mediterranean Villa",
         bedRoom: "3 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
         price: "12,000 FRW"
@@ -98,16 +98,16 @@ export const DesignCards = [
         image: interiorImg,
         type: "Modern",
         title: "Modern Minimalist Villa",
-        bedRoom: "3 Bed Rooms",
+        bedRoom: "5 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
         price: "12,000 FRW"
     },
     {
         id:6,
         image: frontImg,
-        type: "Modern",
-        title: "Modern Minimalist Villa",
-        bedRoom: "3 Bed Rooms",
+        type: "Rustic",
+        title: "Rustic Countryside Home",
+        bedRoom: "7 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
         price: "12,000 FRW"
     },
@@ -116,7 +116,7 @@ export const DesignCards = [
         image: interiorImg,
         type: "Modern",
         title: "Modern Minimalist Villa",
-        bedRoom: "3 Bed Rooms",
+        bedRoom: "2 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
         price: "12,000 FRW"
     },
@@ -125,15 +125,15 @@ export const DesignCards = [
         image: exteriorImg,
         type: "Modern",
         title: "Modern Minimalist Villa",
-        bedRoom: "3 Bed Rooms",
+        bedRoom: "4 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
         price: "12,000 FRW"
     },
     {
         id:9,
         image: interiorImg,
-        type: "Modern",
-        title: "Modern Minimalist Villa",
+        type: "Mediterranean",
+        title: "Mediterranean Villa",
         bedRoom: "3 Bed Room",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
         price: "12,000 FRW"
