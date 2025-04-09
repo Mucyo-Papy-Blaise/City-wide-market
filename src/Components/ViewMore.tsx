@@ -84,7 +84,7 @@ const ViewMore:React.FC = () => {
             className='cursor-pointer bg-terracotta hover:bg-teal text-white w-5 h-5 rounded-full'
             />
         <div 
-        className='flex flex-row mt-3 gap-4 max-w-[300px] overflow-y-auto no-scrollbar cursor-pointer'
+        className='flex flex-row mt-3 gap-4 max-w-[280px] md:max-w-[580px] overflow-y-auto no-scrollbar cursor-pointer'
         ref={scrollRef}
         >  
             {selectedImage.map((subimg, index)=>

@@ -79,7 +79,7 @@ export const footerLinks = [
 export const DesignCards: CardDetailsProps[] = [
     {
         id:1,
-        images: [image1,image2,image3],
+        images: [image1,image2,image3, image5,image8],
         type: "Modern",
         title: "Modern Minimalist Villa",
         bedRoom: "2 Bed Rooms",

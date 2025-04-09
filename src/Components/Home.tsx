@@ -1,7 +1,8 @@
-import React, { JSX } from "react";
+import React, { JSX, useEffect } from "react";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import consimage1 from "../assets/construction1.jpg";
+import consimage2 from '../assets/construction2.jpg'
 import { CardDetails, Choose } from "../Data/Data.ts";
 import {
   HardHat,
@@ -23,11 +24,10 @@ const Home: React.FC = () => {
     description: string;
   }
 
-  const [selectedService, setSelectedService] = useState<serviceProps | null>(
-    null
-  );
+  const [selectedService, setSelectedService] = useState<serviceProps | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  const [current, setCurrent] = useState(0)
 
   const ServiceDetails: serviceProps[] = [
     {
@@ -53,6 +53,8 @@ const Home: React.FC = () => {
     },
   ];
 
+  const images = [consimage1,consimage2]
+
   const scrollLeft = () => {
     if (scrollRef.current) {
       scrollRef.current.scrollBy({ left: -200, behavior: "smooth" });
@@ -65,21 +67,35 @@ const Home: React.FC = () => {
     }
   };
 
+  useEffect(()=>{
+    const interval = setInterval(()=>{
+      setCurrent((prev) => (prev + 1) % images.length)
+    },10000)
+
+    return () => clearInterval(interval)
+  }, [images.length])
+
   return (
     <div className="w-full min-h-scree font-poppins">
       {/* Image Part */}
-      <div className="w-full md:h-80 h-60 bg-blue-600 relative overflow-hidden">
-        <img
-          src={consimage1}
-          alt="constructio-image"
-          className="w-full h-full object-cover"
+      <div className="w-full md:h-80 h-60 relative overflow-hidden">
+      <div className="h-80 w-full bg-gradient-to-r from-charcoal/70 to-transparent absolute z-10" />
+        {images.map((img, index)=>
+          <img
+          key={index}
+          src={img}
+          alt={`image ${index}`}
+          className={`absolute w-full h-full object-cover ${
+            index === current ? "opacity-100 " : "opacity-0"
+          }`}
         />
+        )}
 
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute top-6 md:top-12 left-6 md:left-36 transform -translate-x-1/2 w-full max-w-[350px] md:max-w-[1250px] mx-auto flex flex-col"
+          className="absolute top-6 md:top-12 left-6 md:left-36 transform -translate-x-1/2 w-full max-w-[350px] md:max-w-[1250px] mx-auto flex flex-col z-20"
         >
           <p className="text-white text-[15px] mb-3">
             Welcome to CityWide Market
