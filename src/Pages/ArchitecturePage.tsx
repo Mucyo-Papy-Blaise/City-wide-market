@@ -1,4 +1,5 @@
 import React, { useState,useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, X } from "lucide-react";
 import {motion}  from 'framer-motion'
 import { ChevronDown,ChevronUp,Filter,SquareCheckBigIcon,Square } from "lucide-react";
@@ -6,6 +7,7 @@ import { DesignCards } from "../Data/Data";
 
 
 const ArchitecturePage: React.FC = () => {
+  const navigate = useNavigate()
   const [isSortOpen, setIsSortOpen] = useState<boolean>(false)
   const [selectedSort, setSelectedSort] = useState<number | null>(null)
   const dropDownRef = useRef<HTMLDivElement>(null)
@@ -15,6 +17,12 @@ const ArchitecturePage: React.FC = () => {
   const [clickedBedIcon, setClickedBedIcon] = useState<number | null>(null)
   const [filterCard, setFilteredCards] = useState(DesignCards)
   const [activeFilters, setActiveFilters] = useState({style: null as Number | null , bedRooms: null as Number | null})
+
+  const getCardImage = (card: { images: string | any[]; }) => {
+    if (!Array.isArray(card.images) || card.images.length === 0) return "";
+    if (typeof card.images[0] === "string") return card.images[0];
+    return Object.values(card.images[0])[1] as string;
+  };
  
   // HandleFilterOpen Toggle
   const handleFilterOpen = () =>{
@@ -115,17 +123,6 @@ useEffect(() => {
   };
 }, [isFilterOpen]);
 
-// Unable Scroll When the Filter is Open
-  useEffect(()=>{
-    if(isFilterOpen){
-      document.body.style.overflow = "hidden"
-    }else{
-      document.body.style.overflow = "auto"
-    }
-    return ()=> {
-      document.body.style.overflow = "hidden"
-    }
-  },[isFilterOpen])
 
   // Apply Filters style on Card
   const applyFilters = () => {
@@ -181,7 +178,7 @@ useEffect(() => {
           </h1>
           
           {/* Search */}
-          <div className="flex flex-row justify-between items-center w-full">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center w-full gap-2">
             <div className="flex relative items-center flex-1">
               <Search className="absolute w-4 h-4 ml-2" />
               <input
@@ -191,8 +188,9 @@ useEffect(() => {
               />
             </div>
 
+            <div className="flex flex-row">
             <div
-             className="ml-4 w-40 h-10 gap-1 flex flex-row justify-center items-center rounded border-2 border-[#939393] cursor-pointer relative"
+             className="ml-0 md:ml-4 w-40 h-10 gap-1 flex flex-row justify-center items-center rounded border-2 border-[#939393] cursor-pointer relative"
              onClick={(e)=> {
               e.stopPropagation()
               setIsSortOpen(!isSortOpen)
@@ -201,7 +199,8 @@ useEffect(() => {
               <p 
               onClick={(e)=> e.stopPropagation()}
               className="text-[13px]"
-              >{Sorts[selectedSort ?? 0]}</p>
+              >{Sorts[selectedSort ?? 0]}
+              </p>
               {isSortOpen ? <ChevronUp className="w-5 h-5"/> : <ChevronDown className="w-5 h-5"/>}
 
               {isSortOpen && (
@@ -241,6 +240,7 @@ useEffect(() => {
             >
               <Filter className="w-4 h-4"/>
               <p className="text-[15px]">Filter</p>
+            </div>
             </div>
 
             {isFilterOpen && (
@@ -341,15 +341,19 @@ useEffect(() => {
                   </button>
             </div>
           )}
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(370px,1fr))] gap-x-8 gap-y-5 w-full  mb-5">
+          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(370px,1fr))] gap-4 sm:gap-3 md:gap-5 lg:gap-8 w-full mb-5">
             {filterCard.length > 0 ? (
               filterCard.map((card)=>
                 <div
                  key={card.id}
-                 className="bg-softCream w-[390px] pb-2 h-[430px] border-2 border-[#939393] hover:border-terracotta rounded-[10px] overflow-hidden shadow-xl transition-all duration-300 cursor-pointer"
+                 className="bg-softCream w-[360px] md:w-[390px] pb-2 h-[430px] border-2 border-[#939393] hover:border-terracotta rounded-[10px] overflow-hidden shadow-xl transition-all duration-300 cursor-pointer"
+                 onClick={()=> navigate(`/ViewMore/ ${card.id}`)}
                  >
                  <div className="w-full h-52 overflow-hidden">
-                    <img src={card.image} alt={card.subDescr} className="w-full h-full object-cover hover:opacity-50"/>
+                    <img 
+                    src={getCardImage(card)} 
+                    alt={card.subDescr} 
+                    className="w-full h-full object-cover hover:opacity-50"/>
                  </div>
   
                  <div className=" flex flex-row items-center gap-5 mt-2 px-5">

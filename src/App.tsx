@@ -4,6 +4,7 @@ import LandingPage from './Pages/LandingPage'
 import NavBar from './Components/NavBar';
 import Footer from './Components/Footer';
 import ArchitecturePage from './Pages/ArchitecturePage';
+import ViewMore from './Components/ViewMore';
 
 const App:React.FC = () => {
   return (
@@ -12,7 +13,8 @@ const App:React.FC = () => {
       <Routes>
         <Route path='/' element = {<LandingPage />} />
         <Route path='/Designs' element ={<ArchitecturePage />} />
-      </Routes>
+        <Route path='/ViewMore/:id' element ={<ViewMore />} /> 
+      </Routes >
       <Footer />
     </Router>
   )
