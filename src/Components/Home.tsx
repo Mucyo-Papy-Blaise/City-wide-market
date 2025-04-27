@@ -1,4 +1,4 @@
-import React, { JSX, useEffect } from "react";
+import { JSX, useEffect } from "react";
 import { useState, useRef } from "react";
 import { useNavigate } from "react-router-dom";
 import consimage1 from "../assets/construction1.jpg";
@@ -16,13 +16,14 @@ import {
 import { motion } from "framer-motion";
 import engineer from "../assets/workers.png";
 
-const Home: React.FC = () => {
-  interface serviceProps {
-    title: string;
-    subTitle: string;
-    icon: JSX.Element;
-    description: string;
-  }
+interface serviceProps {
+  title: string;
+  subTitle: string;
+  icon: JSX.Element;
+  description: string;
+}
+
+const Home = () => {
 
   const [selectedService, setSelectedService] = useState<serviceProps | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -78,8 +79,8 @@ const Home: React.FC = () => {
   return (
     <div className="w-full min-h-scree font-poppins">
       {/* Image Part */}
-      <div className="w-full md:h-80 h-60 relative overflow-hidden">
-      <div className="h-80 w-full bg-gradient-to-r from-charcoal/70 to-transparent absolute z-10" />
+      <div className="w-full md:h-96 h-60 relative">
+      <div className="h-96 w-full bg-gradient-to-r from-charcoal/70 to-transparent absolute z-10" />
         {images.map((img, index)=>
           <img
           key={index}
@@ -95,7 +96,7 @@ const Home: React.FC = () => {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute top-6 md:top-12 left-6 md:left-36 transform -translate-x-1/2 w-full max-w-[350px] md:max-w-[1250px] mx-auto flex flex-col z-20"
+          className="absolute top-6 md:top-12 left-6 md:left-36 transform -translate-x-1/2 w-full max-w-[350px] md:max-w-[1250px] mx-auto flex flex-col z-20 "
         >
           <p className="text-white text-[15px] mb-3">
             Welcome to CityWide Market
@@ -109,13 +110,13 @@ const Home: React.FC = () => {
 
           <div className="flex flex-row text-white mt-8 gap-10 md:gap-20">
             <button
-              className="p-[10px] bg-teal rounded-[5px] text-[15px] cursor-pointer hover:bg-[#4dbcaf]"
+              className="p-[10px] bg-teal rounded-[5px] text-[15px] cursor-pointer hover:bg-[#4dbcaf] poin"
               onClick={() => navigate("/Designs")}
             >
               Explore Design
             </button>
             <button className="p-[10px] bg-terracotta rounded-[5px] text-[15px] cursor-pointer hover:bg-[#db816a]">
-              Explore Design
+              Explore Products
             </button>
           </div>
         </motion.div>
@@ -132,7 +133,7 @@ const Home: React.FC = () => {
             {CardDetails.map((card, index) => (
               <div
                 key={index}
-                className="bg-black w-[350px] h-64 relative hover:scale-105 transform ease-in-out duration-300 hover:border-2 cursor-pointer"
+                className="bg-black w-[350px] h-64 relative transform ease-in-out duration-300 hover:-translate-y-2 cursor-pointer"
               >
                 <img
                   src={card.photo}
@@ -164,7 +165,7 @@ const Home: React.FC = () => {
           {ServiceDetails.map((service, index) => (
             <div
               key={index}
-              className="bg-softCream min-w-[200px] w-[200px] md:w-[400px] h-16 rounded flex items-center cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-sunshineYellow"
+              className="bg-softCream min-w-[200px] w-[200px] md:w-[400px] h-16 rounded flex items-center cursor-pointer transition-transform duration-300 ease-in-out hover:bg-sunshineYellow"
               onClick={() => setSelectedService(service)}
             >
               <p className="p-2 md:p-4 ">{service.icon}</p>

@@ -1,12 +1,16 @@
-import React, { useState,useRef, useEffect } from "react";
+import { useState,useRef, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { Search, X } from "lucide-react";
 import {motion}  from 'framer-motion'
 import { ChevronDown,ChevronUp,Filter,SquareCheckBigIcon,Square } from "lucide-react";
 import { DesignCards } from "../Data/Data";
 
+interface ArchProps {
+  addToCart: (item: any) => void
+}
 
-const ArchitecturePage: React.FC = () => {
+
+const ArchitecturePage=({addToCart}: ArchProps) => {
   const navigate = useNavigate()
   const [isSortOpen, setIsSortOpen] = useState<boolean>(false)
   const [selectedSort, setSelectedSort] = useState<number | null>(null)
@@ -16,9 +20,9 @@ const ArchitecturePage: React.FC = () => {
   const [clickedStyleIcon, setclickedStyleIcon] =  useState<number | null>(null)
   const [clickedBedIcon, setClickedBedIcon] = useState<number | null>(null)
   const [filterCard, setFilteredCards] = useState(DesignCards)
-  const [activeFilters, setActiveFilters] = useState({style: null as Number | null , bedRooms: null as Number | null})
+  const [activeFilters, setActiveFilters] = useState({style: null as number | null , bedRooms: null as number | null})
 
-  const getCardImage = (card: { images: string | any[]; }) => {
+  const getCardImage = (card: { images: string | string[]; }) => {
     if (!Array.isArray(card.images) || card.images.length === 0) return "";
     if (typeof card.images[0] === "string") return card.images[0];
     return Object.values(card.images[0])[1] as string;
@@ -343,33 +347,46 @@ useEffect(() => {
           )}
           <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(370px,1fr))] gap-4 sm:gap-3 md:gap-5 lg:gap-8 w-full mb-5">
             {filterCard.length > 0 ? (
-              filterCard.map((card)=>
+              filterCard.map((item)=>
                 <div
-                 key={card.id}
+                 key={item.id}
                  className="bg-softCream w-[360px] md:w-[390px] pb-2 h-[430px] border-2 border-[#939393] hover:border-terracotta rounded-[10px] overflow-hidden shadow-xl transition-all duration-300 cursor-pointer"
-                 onClick={()=> navigate(`/ViewMore/ ${card.id}`)}
                  >
                  <div className="w-full h-52 overflow-hidden">
                     <img 
-                    src={getCardImage(card)} 
-                    alt={card.subDescr} 
+                    src={getCardImage(item)} 
+                    alt={item.subDescr} 
                     className="w-full h-full object-cover hover:opacity-50"/>
                  </div>
   
                  <div className=" flex flex-row items-center gap-5 mt-2 px-5">
-                  <p className="text-black bg-[#e0e0e0]  w-[90px] rounded-xl text-[12px] text-center">{card.type}</p>
-                  <p className="text-black bg-[#e0e0e0]  w-[90px] rounded-xl text-[12px] text-center">{card.bedRoom}</p>
+                  <p className="text-black bg-[#e0e0e0]  w-[90px] rounded-xl text-[12px] text-center">{item.type}</p>
+                  <p className="text-black bg-[#e0e0e0]  w-[90px] rounded-xl text-[12px] text-center">{item.bedRoom}</p>
                  </div>
   
                  <div className="px-5 mt-3">
-                    <h1 className="text-charcoal font-bold text-[20px] mb-2">{card.title}</h1>
-                    <p className="text-lightGray text-[13px] mb-2">{card.subDescr}</p>
-                    <p className="text-black font-bold text-[20px] mb-2">{card.price}</p>
+                    <h1 className="text-charcoal font-bold text-[20px] mb-2">{item.title}</h1>
+                    <p className="text-lightGray text-[13px] mb-2">{item.subDescr}</p>
+                    <p className="text-black font-bold text-[20px] mb-2">{item.price}</p>
                  </div>
   
                  <div className="flex flex-row px-5 mt-3 justify-between">
-                    <button className="border-2 border-[#939393] p-2 w-36 text-[12px] rounded-lg">View Details</button>
-                    <button className="bg-teal p-2 w-36 text-[12px] rounded-lg text-black">Purchase</button>
+                    <button className="border-2 border-[#939393] p-2 w-36 text-[12px] rounded-lg"
+                    onClick={()=> navigate(`/ViewMore/ ${item.id}`)}
+                    >
+                      View Details
+                    </button>
+                    <button className="bg-teal p-2 w-36 text-[12px] rounded-lg text-black"
+                    onClick={(e)=>{
+                      e.stopPropagation()
+                      addToCart({
+                        ...item,
+                        image:getCardImage(item)
+                      })
+                    }}
+                    >
+                      Purchase
+                    </button>
                  </div>
                 </div>
               )

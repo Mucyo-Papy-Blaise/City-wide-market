@@ -16,7 +16,8 @@ export default {
         teal: "#2A9D8F", // Primary Buttons
         terracotta: "#E76F51", //Special promotions, sale tags
         sunshineYellow: "#E9C46A", //Highlights, secondary accents
-        lightGray:"#515050" // paragraph texts
+        lightGray:"#515050", // paragraph texts
+        whiteText: "#d2d2d2"
       }
     },
   },
