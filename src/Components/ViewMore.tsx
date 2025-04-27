@@ -1,9 +1,14 @@
-import React, { useEffect, useState,useRef } from 'react'
+import { useEffect, useState,useRef } from 'react'
 import { useParams,useNavigate } from 'react-router-dom'
 import { ArrowLeft,Heart,Share2,ArrowLeftCircle,ArrowRightCircle } from 'lucide-react'
 import {DesignCards} from '../Data/Data'
+import { CartItem } from '../Data/Types'
 
-const ViewMore:React.FC = () => {
+interface viewProps{
+    addToCart: (item: CartItem) => void
+}
+
+const ViewMore =({addToCart}: viewProps) => {
     const navigate = useNavigate()
     const { id } = useParams()
     const design = DesignCards.find(card => card.id === Number(id))
@@ -66,7 +71,21 @@ const ViewMore:React.FC = () => {
             <div className='flex flex-row gap-5 mt-4 md:mt-10'>
                 <Heart  className='bg-soft border-2 p-2 w-10 h-10 rounded-lg cursor-pointer'/> 
                 <Share2 className='bg-softCream border-2 p-2 w-10 h-10 rounded-lg cursor-pointer' />
-                <button className='bg-teal p-2 w-48 h-10 text-white text-center rounded-lg hover:bg-[#326864]'>Purchase</button>
+                <button className='bg-teal p-2 w-48 h-10 text-white text-center rounded-lg hover:bg-[#326864]'
+                onClick={(e)=> {
+                    e.stopPropagation()
+                    addToCart({
+                        id: design.id,
+                        title: design.title,
+                        subDescr: design.subDescr,
+                        price: Number(design.price),
+                        image: ActiveImage,
+                        quantity: 1,
+                    })
+                }}
+                >Purchase
+                
+                </button>
             </div>
         </div>
 
@@ -95,7 +114,7 @@ const ViewMore:React.FC = () => {
                 }`}
                 onClick={() =>setActiveImage(subimg)}
                 >
-                <img src={subimg} alt="" className='w-full h-full object-cover hover:opacity-50' />
+                <img src={subimg} alt="No image Found" className='w-full h-full object-cover hover:opacity-50' />
                 </div>
             )}  
         </div>
@@ -128,7 +147,7 @@ const ViewMore:React.FC = () => {
         </div>
     </div>
     <div className='flex flex-col border-2 border-[#e0e0e0] bg-softCream w-[350px] md:w-[400px] md:h-[650px] mt-12 rounded-lg p-5 gap-4'>
-            <h1 className='text-black font-bold text-[20px]'>{design.price}</h1>
+            <h1 className='text-black font-bold text-[20px]'>{design.price.toString()}</h1>
             <h1 className='text-lightGray text-[15px]'>One-time purchase, includes:</h1>
 
             {design.package?.map((pack, index)=>
@@ -139,7 +158,19 @@ const ViewMore:React.FC = () => {
              </div>
             )}
 
-            <button className='bg-teal text-softCream p-2 mt-5 rounded font-semibold hover:bg-[#326864]'>Purchase Design</button>
+            <button className='bg-teal text-softCream p-2 mt-5 rounded font-semibold hover:bg-[#326864]'
+            onClick={(e)=>{
+                e.stopPropagation()
+                addToCart({
+                    id: design.id,
+                    title: design.title,
+                    subDescr: design.subDescr,
+                    price: Number(design.price),
+                    image: ActiveImage,
+                    quantity:1 
+                })
+            }}
+            >Purchase Design</button>
             <button className='bg-terracotta text-softCream p-2 mt-2 rounded font-semibold hover:bg-[#b05d48]'>Request Customization</button>
 
             <h1 className='text-charcoal font-bold text-[20px] mt-5'>Need help?</h1>

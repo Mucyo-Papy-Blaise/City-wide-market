@@ -18,7 +18,7 @@ interface CardDetailsProps{
     title: string,
     bedRoom: string,
     subDescr: string, 
-    price: string,
+    price: Number,
     package: string[],
     description: string,
     keyFeatures: string[],
@@ -84,7 +84,7 @@ export const DesignCards: CardDetailsProps[] = [
         title: "Modern Minimalist Villa",
         bedRoom: "2 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
-        price: "12,000 FRW",
+        price: 12000,
         package:["Complete architectural plans","3D renderings","Material specifications","Construction documents","Digital files (PDF, CAD"],
         description: "This Modern Minimalist Villa is designed for those who appreciate clean lines, open spaces, and a seamless connection with the outdoors. The design features large windows that flood the interior with natural light and provide panoramic views of the surrounding landscape. The floor plan is thoughtfully arranged to maximize space efficiency while maintaining an open, airy feel. The main living area combines the kitchen, dining, and living spaces into one cohesive zone, perfect for both everyday living and entertaining guests.The exterior showcases a harmonious blend of concrete, glass, and wood elements, creating a striking yet balanced aesthetic. The flat roof design not only contributes to the modern look but also provides space for a rooftop terrace or garden.",
         keyFeatures: ["3 Bedrooms", "Open Floor Plan","Home Office Space","2.5 Bathrooms","2-Car Garage","Floor-to-Ceiling Windows","Gourmet Kitchen with Island","Outdoor Living Area"]
@@ -96,7 +96,7 @@ export const DesignCards: CardDetailsProps[] = [
         title: "Rustic Countryside Home",
         bedRoom: "1 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
-        price: "12,000 FRW",
+        price: 10000,
         package:["Complete architectural plans","3D renderings","Material specifications","Construction documents","Digital files (PDF, CAD"],
         description: "This Modern Minimalist Villa is designed for those who appreciate clean lines, open spaces, and a seamless connection with the outdoors. The design features large windows that flood the interior with natural light and provide panoramic views of the surrounding landscape. The floor plan is thoughtfully arranged to maximize space efficiency while maintaining an open, airy feel. The main living area combines the kitchen, dining, and living spaces into one cohesive zone, perfect for both everyday living and entertaining guests.The exterior showcases a harmonious blend of concrete, glass, and wood elements, creating a striking yet balanced aesthetic. The flat roof design not only contributes to the modern look but also provides space for a rooftop terrace or garden.",
         keyFeatures: ["3 Bedrooms", "Open Floor Plan","Home Office Space","2.5 Bathrooms","2-Car Garage","Floor-to-Ceiling Windows","Gourmet Kitchen with Island","Outdoor Living Area"]
@@ -108,7 +108,7 @@ export const DesignCards: CardDetailsProps[] = [
         title: "Urban Loft Design",
         bedRoom: "8 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
-        price: "12,000 FRW",
+        price: 30000,
         package:["Complete architectural plans","3D renderings","Material specifications","Construction documents","Digital files (PDF, CAD"],
         description: "This Modern Minimalist Villa is designed for those who appreciate clean lines, open spaces, and a seamless connection with the outdoors. The design features large windows that flood the interior with natural light and provide panoramic views of the surrounding landscape. The floor plan is thoughtfully arranged to maximize space efficiency while maintaining an open, airy feel. The main living area combines the kitchen, dining, and living spaces into one cohesive zone, perfect for both everyday living and entertaining guests.The exterior showcases a harmonious blend of concrete, glass, and wood elements, creating a striking yet balanced aesthetic. The flat roof design not only contributes to the modern look but also provides space for a rooftop terrace or garden.",
         keyFeatures: ["3 Bedrooms", "Open Floor Plan","Home Office Space","2.5 Bathrooms","2-Car Garage","Floor-to-Ceiling Windows","Gourmet Kitchen with Island","Outdoor Living Area"]
@@ -120,7 +120,7 @@ export const DesignCards: CardDetailsProps[] = [
         title: "Mediterranean Villa",
         bedRoom: "3 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
-        price: "12,000 FRW",
+        price: 50000,
         package: ["Complete architectural plans","3D renderings","Material specifications","Construction documents","Digital files (PDF, CAD"],
         description: "This Modern Minimalist Villa is designed for those who appreciate clean lines, open spaces, and a seamless connection with the outdoors. The design features large windows that flood the interior with natural light and provide panoramic views of the surrounding landscape. The floor plan is thoughtfully arranged to maximize space efficiency while maintaining an open, airy feel. The main living area combines the kitchen, dining, and living spaces into one cohesive zone, perfect for both everyday living and entertaining guests.The exterior showcases a harmonious blend of concrete, glass, and wood elements, creating a striking yet balanced aesthetic. The flat roof design not only contributes to the modern look but also provides space for a rooftop terrace or garden.",
         keyFeatures: ["3 Bedrooms", "Open Floor Plan","Home Office Space","2.5 Bathrooms","2-Car Garage","Floor-to-Ceiling Windows","Gourmet Kitchen with Island","Outdoor Living Area"]
@@ -132,7 +132,7 @@ export const DesignCards: CardDetailsProps[] = [
         title: "Modern Minimalist Villa",
         bedRoom: "5 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
-        price: "12,000 FRW",
+        price: 15000,
         package: ["Complete architectural plans","3D renderings","Material specifications","Construction documents","Digital files (PDF, CAD"],
         description: "This Modern Minimalist Villa is designed for those who appreciate clean lines, open spaces, and a seamless connection with the outdoors. The design features large windows that flood the interior with natural light and provide panoramic views of the surrounding landscape. The floor plan is thoughtfully arranged to maximize space efficiency while maintaining an open, airy feel. The main living area combines the kitchen, dining, and living spaces into one cohesive zone, perfect for both everyday living and entertaining guests.The exterior showcases a harmonious blend of concrete, glass, and wood elements, creating a striking yet balanced aesthetic. The flat roof design not only contributes to the modern look but also provides space for a rooftop terrace or garden.",
         keyFeatures: ["3 Bedrooms", "Open Floor Plan","Home Office Space","2.5 Bathrooms","2-Car Garage","Floor-to-Ceiling Windows","Gourmet Kitchen with Island","Outdoor Living Area"]
@@ -144,7 +144,7 @@ export const DesignCards: CardDetailsProps[] = [
         title: "Rustic Countryside Home",
         bedRoom: "7 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
-        price: "12,000 FRW",
+        price: 20000,
         package: ["Complete architectural plans","3D renderings","Material specifications","Construction documents","Digital files (PDF, CAD"],
         description: "This Modern Minimalist Villa is designed for those who appreciate clean lines, open spaces, and a seamless connection with the outdoors. The design features large windows that flood the interior with natural light and provide panoramic views of the surrounding landscape. The floor plan is thoughtfully arranged to maximize space efficiency while maintaining an open, airy feel. The main living area combines the kitchen, dining, and living spaces into one cohesive zone, perfect for both everyday living and entertaining guests.The exterior showcases a harmonious blend of concrete, glass, and wood elements, creating a striking yet balanced aesthetic. The flat roof design not only contributes to the modern look but also provides space for a rooftop terrace or garden.",
         keyFeatures: ["3 Bedrooms", "Open Floor Plan","Home Office Space","2.5 Bathrooms","2-Car Garage","Floor-to-Ceiling Windows","Gourmet Kitchen with Island","Outdoor Living Area"]
@@ -156,7 +156,7 @@ export const DesignCards: CardDetailsProps[] = [
         title: "Modern Minimalist Villa",
         bedRoom: "2 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
-        price: "12,000 FRW",
+        price: 40000,
         package: ["Complete architectural plans","3D renderings","Material specifications","Construction documents","Digital files (PDF, CAD"],
         description: 'his Modern Minimalist Villa is designed for those who appreciate clean lines, open spaces, and a seamless connection with the outdoors. The design features large windows that flood the interior with natural light and provide panoramic views of the surrounding landscape. The floor plan is thoughtfully arranged to maximize space efficiency while maintaining an open, airy feel. The main living area combines the kitchen, dining, and living spaces into one cohesive zone, perfect for both everyday living and entertaining guests.The exterior showcases a harmonious blend of concrete, glass, and wood elements, creating a striking yet balanced aesthetic. The flat roof design not only contributes to the modern look but also provides space for a rooftop terrace or garden.',
         keyFeatures: ["3 Bedrooms", "Open Floor Plan","Home Office Space","2.5 Bathrooms","2-Car Garage","Floor-to-Ceiling Windows","Gourmet Kitchen with Island","Outdoor Living Area"]
@@ -168,7 +168,7 @@ export const DesignCards: CardDetailsProps[] = [
         title: "Modern Minimalist Villa",
         bedRoom: "4 Bed Rooms",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
-        price: "12,000 FRW",
+        price: 40000,
         package: ["Complete architectural plans","3D renderings","Material specifications","Construction documents","Digital files (PDF, CAD"],
         description: 'his Modern Minimalist Villa is designed for those who appreciate clean lines, open spaces, and a seamless connection with the outdoors. The design features large windows that flood the interior with natural light and provide panoramic views of the surrounding landscape. The floor plan is thoughtfully arranged to maximize space efficiency while maintaining an open, airy feel. The main living area combines the kitchen, dining, and living spaces into one cohesive zone, perfect for both everyday living and entertaining guests.The exterior showcases a harmonious blend of concrete, glass, and wood elements, creating a striking yet balanced aesthetic. The flat roof design not only contributes to the modern look but also provides space for a rooftop terrace or garden.',
         keyFeatures: ["3 Bedrooms", "Open Floor Plan","Home Office Space","2.5 Bathrooms","2-Car Garage","Floor-to-Ceiling Windows","Gourmet Kitchen with Island","Outdoor Living Area"]
@@ -180,7 +180,7 @@ export const DesignCards: CardDetailsProps[] = [
         title: "Mediterranean Villa",
         bedRoom: "3 Bed Room",
         subDescr: "A sleek, minimalist design with open spaces and large windows.",
-        price: "12,000 FRW",
+        price: 60000,
         package: ["Complete architectural plans","3D renderings","Material specifications","Construction documents","Digital files (PDF, CAD"],
         description: 'his Modern Minimalist Villa is designed for those who appreciate clean lines, open spaces, and a seamless connection with the outdoors. The design features large windows that flood the interior with natural light and provide panoramic views of the surrounding landscape. The floor plan is thoughtfully arranged to maximize space efficiency while maintaining an open, airy feel. The main living area combines the kitchen, dining, and living spaces into one cohesive zone, perfect for both everyday living and entertaining guests.The exterior showcases a harmonious blend of concrete, glass, and wood elements, creating a striking yet balanced aesthetic. The flat roof design not only contributes to the modern look but also provides space for a rooftop terrace or garden.',
         keyFeatures: ["3 Bedrooms", "Open Floor Plan","Home Office Space","2.5 Bathrooms","2-Car Garage","Floor-to-Ceiling Windows","Gourmet Kitchen with Island","Outdoor Living Area"]

@@ -367,7 +367,7 @@ useEffect(() => {
                  <div className="px-5 mt-3">
                     <h1 className="text-charcoal font-bold text-[20px] mb-2">{item.title}</h1>
                     <p className="text-lightGray text-[13px] mb-2">{item.subDescr}</p>
-                    <p className="text-black font-bold text-[20px] mb-2">{item.price}</p>
+                    <p className="text-black font-bold text-[20px] mb-2">{item.price.toLocaleString()} RWF</p>
                  </div>
   
                  <div className="flex flex-row px-5 mt-3 justify-between">
@@ -380,8 +380,12 @@ useEffect(() => {
                     onClick={(e)=>{
                       e.stopPropagation()
                       addToCart({
-                        ...item,
-                        image:getCardImage(item)
+                        id: item.id,
+                        title: item.title,
+                        subDescr: item.subDescr,
+                        price: Number(item.price),
+                        image: getCardImage(item),
+                        quantity: 1
                       })
                     }}
                     >

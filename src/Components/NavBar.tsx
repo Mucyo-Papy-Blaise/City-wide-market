@@ -7,9 +7,10 @@ import Cart from "./Cart";
 interface NavProps{
   cartItems: any[];
   removeCart: (id: any) => void;
+  deleteCart: () => void
 }
 
-const NavBar = ({cartItems,removeCart}:NavProps) => {
+const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
   const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState<number | null>(null);
   const [isMaterialOpen, setIsMaterialOpen] = useState<boolean>(false);
@@ -273,7 +274,7 @@ const NavBar = ({cartItems,removeCart}:NavProps) => {
         </div>
 
         {isCartOpen && (
-          <Cart onClose={handleClose} onDelete={removeCart} cartItems={cartItems}/>
+          <Cart onClose={handleClose} onDelete={removeCart} cartItems={cartItems} resetCart={deleteCart}/>
         )}
 
         {/* Mobile Phone */}
