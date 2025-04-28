@@ -1,13 +1,15 @@
 import { useState, useRef, useEffect} from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/City-wide.png";
-import { Menu, X, ChevronDown, ChevronUp, Search, Home, PencilRuler, CalendarDays, ShoppingBag, ShoppingCartIcon} from "lucide-react";
+import { Menu, X, ChevronDown, ChevronUp,Search, Home, PencilRuler, CalendarDays, ShoppingBag, ShoppingCartIcon} from "lucide-react";
 import Cart from "./Cart";
+import {motion} from 'framer-motion'
+import Footer from "./Footer";
 
 interface NavProps{
   cartItems: any[];
   removeCart: (id: any) => void;
-  deleteCart: () => void
+  deleteCart: () => void,
 }
 
 const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
@@ -19,13 +21,14 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
   const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false);
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
   const [isCartOpen, setIsCartOpen] = useState<boolean>(false)
-  const materialsTriggerRef = useRef<HTMLDivElement>(null);
+  const storeTriggerRef = useRef<HTMLDivElement>(null);
   const designTriggerRef = useRef<HTMLDivElement>(null);
   const projectTriggerRef = useRef<HTMLDivElement>(null);
-  const materialsDropdownRef = useRef<HTMLDivElement>(null);
+  const storeDropdownRef = useRef<HTMLDivElement>(null);
   const designDropdownRef = useRef<HTMLDivElement>(null);
   const projectDropdownRef = useRef<HTMLDivElement>(null);
-
+  const mobileRef = useRef<HTMLDivElement>(null)
+ 
   const toggleMobile = () => {
     setIsMobileOpen(!isMobileOpen);
   };
@@ -36,13 +39,12 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
 
   useEffect(() => {
     const handleClickOutside = (e: MouseEvent) => {
-
       if (
         isMaterialOpen &&
-        materialsTriggerRef.current &&
-        !materialsTriggerRef.current.contains(e.target as Node) &&
-        materialsDropdownRef.current &&
-        !materialsDropdownRef.current.contains(e.target as Node)
+        storeTriggerRef.current &&
+        !storeTriggerRef.current.contains(e.target as Node) &&
+        storeDropdownRef.current &&
+        !storeDropdownRef.current.contains(e.target as Node)
       ) {
         setIsMaterialOpen(false);
       }
@@ -65,7 +67,8 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
         !projectDropdownRef.current.contains(e.target as Node)
       ) {
         setIsProjectOpen(false);
-      }
+      } 
+      
     };
 
     if (isMaterialOpen || isDesignOpen || isProjectOpen) {
@@ -77,8 +80,21 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
     };
   }, [isMaterialOpen, isDesignOpen, isProjectOpen]);
   
+  useEffect(()=>{
+    const handleClickMobileOutside =(e: MouseEvent)=>{
+      if(isMobileOpen && mobileRef.current && !mobileRef.current.contains(e.target as Node)){
+        setIsMobileOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickMobileOutside)
+
+    return ()=>{
+      document.removeEventListener("mousedown",handleClickMobileOutside)
+    }
+  },[isMobileOpen])
+
   useEffect(() => {
-    if (isMobileOpen && isCartOpen) {
+    if (isMobileOpen || isCartOpen) {
       document.body.style.overflow = 'hidden';
     } else {
       document.body.style.overflow = 'auto';
@@ -114,7 +130,7 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
   ];
 
   const getRefForLink = (link: any) => {
-    if (link.storeSubLinks) return materialsTriggerRef;
+    if (link.storeSubLinks) return storeTriggerRef;
     if (link.designSubLinks) return designTriggerRef;
     if (link.projectSubLinks) return projectTriggerRef;
     return null;
@@ -202,7 +218,7 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
                 {link.storeSubLinks && isMaterialOpen && (
                   <div 
                     className="absolute -left-16 top-full mt-3 w-60 bg-charcoal rounded-lg shadow-lg p-3 z-50"
-                    ref={materialsDropdownRef}
+                    ref={storeDropdownRef}
                   >
                     {link.storeSubLinks.map((sublink) => (
                       <div
@@ -274,52 +290,39 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
         </div>
 
         {isCartOpen && (
-          <Cart onClose={handleClose} onDelete={removeCart} cartItems={cartItems} resetCart={deleteCart}/>
+          <Cart onClose={handleClose} onDelete={removeCart} cartItems={cartItems} resetCart={deleteCart} />
         )}
+
 
         {/* Mobile Phone */}
         {isMobileOpen && (
-          <div className="block md:hidden absolute right-0 top-10 bg-charcoal h-screen w-60 p-3 rounded-b-md text-white z-50">
+          <motion.div 
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "tween", duration: 0.4, ease: "easeInOut" }}
+            ref={mobileRef} 
+            className="block md:hidden fixed inset-0 right-0 top-12 bg-white h-screen w-full p-3 rounded-b-md text-white z-30">
             {navLinks.map((link) => (
               <div
                 key={link.id}
-                className={`p-2 flex relative${
-                  activeLink === link.id ? "text-sunshineYellow" : ""
-                }`}
-                onClick={() => {
-                  setActiveLink(link.id);
-                  if (link.storeSubLinks || link.designSubLinks || link.projectSubLinks) {
-                    setIsMaterialOpen((prev) => !prev);
-                  } else {
-                    setIsMaterialOpen(false);
-                  }
-                }}
+                className="flex relative p-2"
               >
-                <p className="flex flex-row gap-2 justify-center items-center text-sm">
+                <div className="flex w-full justify-between items-center">
+                <p className={`flex flex-row gap-2 justify-center items-center text-xl text-charcoal font-semibold mt-3 ${
+                  activeLink === link.id ? "text-terracotta" : "text-charcoal"
+                }`}>
                   <span>{link.icon}</span>{link.name}
                 </p>
-                {link.id !== 1 && (link.designSubLinks || link.projectSubLinks || link.storeSubLinks) && (
-                  <span>
-                    {isMaterialOpen ? <ChevronUp /> : <ChevronDown />}
-                  </span>
-                )}
-
-                {link.storeSubLinks && isMaterialOpen && (
-                  <div className="absolute right-3 top-32 mt-2 bg-white rounded-lg shadow-lg border-[2px] border-teal">
-                    {link.storeSubLinks.map((sublink) => (
-                      <div
-                        key={sublink.id}
-                        className="px-4 py-2 text-sm text-black"
-                      >
-                        <h1 className="font-bold">{sublink.title}</h1>
-                        <p className="text-whiteText text-[12px] font-thin">{sublink.descr}</p>
-                      </div>
-                    ))}
-                  </div>
-                )}
+                </div>
               </div>
             ))}
+
+          <div className="pt-20">
+            <div className="h-[1px] bg-[#9b9b9b]"/>
+            <Footer />
           </div>
+          </motion.div>
         )}
       </div>
     </div>

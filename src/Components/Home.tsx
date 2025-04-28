@@ -27,6 +27,7 @@ const Home = () => {
 
   const [selectedService, setSelectedService] = useState<serviceProps | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const ServiceRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate();
   const [current, setCurrent] = useState(0)
 
@@ -76,10 +77,32 @@ const Home = () => {
     return () => clearInterval(interval)
   }, [images.length])
 
+  useEffect(()=>{
+    const handleClickOutside =(e: MouseEvent)=>{
+      if(ServiceRef.current && !ServiceRef.current.contains(e.target as Node)){
+        setSelectedService(null)
+      }
+    }
+
+    document.addEventListener('mousedown',handleClickOutside)
+
+    return ()=>{
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  },[])
+
+  useEffect(()=>{
+    if(selectedService){
+      document.body.style.overflow = 'hidden'
+    }else{
+      document.body.style.overflow = 'auto'
+    }
+  })
+
   return (
     <div className="w-full min-h-scree font-poppins">
       {/* Image Part */}
-      <div className="w-full md:h-96 h-60 relative">
+      <div className="w-full md:h-96 h-60 relative overflow-hidden">
       <div className="h-96 w-full bg-gradient-to-r from-charcoal/70 to-transparent absolute z-10" />
         {images.map((img, index)=>
           <img
@@ -153,7 +176,7 @@ const Home = () => {
       </div>
 
       {/* Service Part */}
-      <div className="bg-charcoal flex flex-row w-full gap-2 md:p-5 p-3">
+      <div className="bg-charcoal flex flex-row items-center w-full gap-2 md:p-5 p-3">
         <ArrowLeftCircleIcon
           className="w-10 h-10 text-white flex md:hidden cursor-pointer hover:text-terracotta"
           onClick={scrollLeft}
@@ -186,7 +209,7 @@ const Home = () => {
 
       {selectedService && (
         <div className="bg-black w-full min-h-screen fixed inset-0 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-softCream w-[400px] p-6 rounded-lg shadow-lg relative">
+          <div className="bg-softCream w-[400px] p-6 rounded-lg shadow-lg relative" ref={ServiceRef}>
             <button
               className="absolute top-2 right-3 text-white text-xl bg-terracotta p-1 rounded-full"
               onClick={() => setSelectedService(null)}

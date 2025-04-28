@@ -1,4 +1,6 @@
+import { useRef, useEffect } from "react";
 import { X, Trash2Icon } from "lucide-react";
+import {motion, AnimatePresence} from 'framer-motion'
 
 interface CartProps {
     cartItems: any[]
@@ -11,12 +13,38 @@ const Cart = ({onClose,cartItems,onDelete,resetCart}: CartProps) => {
 
     const safeCartItems = Array.isArray(cartItems) ? cartItems : []
     const totalItems = safeCartItems.length
-    const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+    const totalPrice = cartItems.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+    const cartRef = useRef<HTMLDivElement>(null)
 
+    useEffect(()=>{
+      const handleClickOutside =(e: MouseEvent)=>{
+        if(cartRef.current && !cartRef.current.contains(e.target as Node)){
+          onClose()
+        }
+      }
+      document.addEventListener('mousedown',handleClickOutside)
+
+      return ()=> {
+        document.removeEventListener('mousedown', handleClickOutside)
+      }
+    },[onclose])
+    
   return (
-    <div
-    className="bg-black/30 fixed inset-0 z-50 font-poppins">
-      <div className="bg-softCream right-0 ml-auto w-[400px] h-full p-8 overflow-y-auto">
+    <AnimatePresence mode="wait">
+      <motion.div 
+        className="bg-black/30 fixed inset-0 z-50 font-poppins"
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        exit={{ opacity: 0 }}
+        transition={{ duration: 0.4 }}
+      >
+      <motion.div 
+        className="bg-softCream right-0 ml-auto md:w-[400px] w-full h-full p-8 overflow-y-auto"ref={cartRef}
+        initial={{ x: "100%" }}
+        animate={{ x: 0 }}
+        exit={{ x: "100%" }}
+        transition={{ type: "tween", duration: 0.4, ease: "easeInOut" }}
+      >
         <div className="flex flex-col">
           <div className="flex flex-row justify-between items-center">
             <h1 className="font-bold text-lg">Your Shopping Cart</h1>
@@ -72,12 +100,14 @@ const Cart = ({onClose,cartItems,onDelete,resetCart}: CartProps) => {
             <p>Total Price: <span className="text-teal font-bold">{totalPrice.toLocaleString('en-US', { minimumFractionDigits: 0 })} Rwf</span></p>
           </div>
           )}
+          <button className="bg-terracotta mt-5 rounded font-semibold text-white hover:bg-[#c36148] p-2">Buy Items</button>
           <button className="mt-5 bg-teal p-2 rounded font-semibold text-white hover:bg-[#26786f]"
             onClick={resetCart}
           >Reset Cart</button>
         </div>
-      </div>
-    </div>
+      </motion.div>
+    </motion.div>
+  </AnimatePresence>
   );
 };
 
