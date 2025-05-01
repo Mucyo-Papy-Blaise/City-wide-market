@@ -5,6 +5,7 @@ import NavBar from './Components/NavBar';
 import Footer from './Components/Footer';
 import ArchitecturePage from './Pages/ArchitecturePage';
 import ViewMore from './Components/ViewMore';
+import {SearchProvider } from './Context/SearchContext';
 import { CartItem } from './Data/Types';
 
 const App:React.FC = () => {
@@ -54,20 +55,18 @@ const App:React.FC = () => {
     localStorage.setItem('cart', JSON.stringify(cartItems))
   },[cartItems])
   
-  useEffect(()=>{
-    localStorage.setItem('cart',JSON.stringify(cartItems))
-  },[cartItems])
-
   return (
-    <Router>
-      <NavBar cartItems ={cartItems} removeCart={removeFromCart} deleteCart={deleteCart}/>
-      <Routes>
-        <Route path='/' element = {<Home />} />
-        <Route path='/Designs' element ={<ArchitecturePage addToCart={addToCart}/>} />
-        <Route path='/ViewMore/:id' element ={<ViewMore addToCart={addToCart} />} /> 
-      </Routes >
-      <Footer />
-    </Router>
+      <SearchProvider>
+        <Router>
+        <NavBar cartItems ={cartItems} removeCart={removeFromCart} deleteCart={deleteCart}/>
+        <Routes>
+          <Route path='/' element = {<Home />} />
+          <Route path='/Designs' element ={<ArchitecturePage addToCart={addToCart}/>} />
+          <Route path='/ViewMore/:id' element ={<ViewMore addToCart={addToCart} />} /> 
+        </Routes >
+        <Footer />
+        </Router>
+      </SearchProvider>
   )
 }
 

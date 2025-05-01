@@ -1,10 +1,11 @@
-import { useState, useRef, useEffect} from "react";
+import { useState, useRef, useEffect,useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/City-wide.png";
 import { Menu, X, ChevronDown, ChevronUp,Search, Home, PencilRuler, CalendarDays, ShoppingBag, ShoppingCartIcon} from "lucide-react";
 import Cart from "./Cart";
 import {motion} from 'framer-motion'
 import Footer from "./Footer";
+import { SearchContext } from "../Context/SearchContext";
 
 interface NavProps{
   cartItems: any[];
@@ -28,6 +29,7 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
   const designDropdownRef = useRef<HTMLDivElement>(null);
   const projectDropdownRef = useRef<HTMLDivElement>(null);
   const mobileRef = useRef<HTMLDivElement>(null)
+  const {setSearchQuery} = useContext(SearchContext)
  
   const toggleMobile = () => {
     setIsMobileOpen(!isMobileOpen);
@@ -139,6 +141,7 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
   const handleClose = () =>{
     setIsCartOpen(false)
   }
+  
   return (
     <div className="w-full md:p-4 p-2 bg-charcoal relative">
       <div className="flex flex-row items-center justify-between px-4 md:px-8 lg:px-32 mx-auto font-poppins">
@@ -160,6 +163,7 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
                   type="text"
                   className="w-[200px] p-1 outline-none bg-transparent border-2 border-[#E9ECEF] text-white text-[12px] rounded-lg focus:ring-2 ring-sunshineYellow"
                   placeholder="Search here..."
+                  onChange={(e)=> setSearchQuery(e.target.value)}
                 />
               ) : (
                 <div className="text-white p-1 bg-teal rounded-full">
@@ -275,6 +279,7 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
             type="text"
             className="md:w-[300px] md:flex hidden md:h-8 p-3 outline-none bg-transparent border-2 border-[#E9ECEF] text-white text-[15px] rounded-lg focus:ring-2 ring-sunshineYellow"
             placeholder="Search here..."
+            onChange={(e)=>setSearchQuery(e.target.value)}
           />
          <div className="flex justify-center items-cente cursor-pointer hover:bg-whiteText/40 p-2 rounded-full relative"
          onClick={toggleCart}

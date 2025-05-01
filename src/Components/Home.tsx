@@ -1,20 +1,14 @@
 import { JSX, useEffect } from "react";
-import { useState, useRef } from "react";
+import { useState, useRef,useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import consimage1 from "../assets/construction1.jpg";
 import consimage2 from '../assets/construction2.jpg'
 import { CardDetails, Choose } from "../Data/Data.ts";
-import {
-  HardHat,
-  PencilRuler,
-  Hammer,
-  ArrowRightCircle,
-  X,
-  ArrowRightCircleIcon,
-  ArrowLeftCircleIcon,
-} from "lucide-react";
+import {HardHat,PencilRuler,Hammer,ArrowRightCircle,X,ArrowRightCircleIcon,ArrowLeftCircleIcon,} from "lucide-react";
 import { motion } from "framer-motion";
 import engineer from "../assets/workers.png";
+import { SearchContext } from "../Context/SearchContext.tsx";
+import highlightText from '../Data/highlightedText.tsx'
 
 interface serviceProps {
   title: string;
@@ -30,6 +24,7 @@ const Home = () => {
   const ServiceRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate();
   const [current, setCurrent] = useState(0)
+  const {searchQuery} = useContext(SearchContext)
 
   const ServiceDetails: serviceProps[] = [
     {
@@ -54,6 +49,15 @@ const Home = () => {
         "We supply high-quality building materials that support long-lasting and energy-efficient construction. Our range includes cement, bricks, roofing, steel, insulation, and interior finishes—all carefully sourced to meet industry standards. Whether you're a contractor, builder, or DIY enthusiast, our materials ensure your project is built on a strong and sustainable foundation.",
     },
   ];
+
+  const filteredService = ServiceDetails.filter((service)=>
+    service.title.toLowerCase().includes(searchQuery.trim().toLowerCase()) ||
+    service.subTitle.toLowerCase().includes(searchQuery.trim().toLowerCase())
+  )
+
+  const filteredCards =  CardDetails.filter((card) =>
+    card.name.toLowerCase().includes(searchQuery.toLowerCase())
+  )
 
   const images = [consimage1,consimage2]
 
@@ -101,6 +105,56 @@ const Home = () => {
 
   return (
     <div className="w-full min-h-scree font-poppins">
+        {searchQuery && (filteredService.length > 0 || filteredCards.length > 0) && (
+           <div className="absolute bg-slate-200 border-teal p-3 rounded mb-5 w-full px-4 md:px-8 lg:px-32 mx-auto z-50 overflow-y-auto shadow-xl">
+              <h2 className="text-charcoal font-bold mb-2 text-[16px]">Quick Results:</h2>
+              {filteredService.length > 0 && (
+                <div className="flex flex-col gap-2 text-sm">
+                  <h3 className="text-terracotta font-semibold text-lg mb-2">Service</h3>
+                  {filteredService.map((service, id) => (
+                   <div
+                   key={id}
+                   className="flex flex-col gap-2"
+                   >
+                    <h1 className="text-black bg-slate-300 w-fit p-2 rounded-2xl font-semibold cursor-pointer hover:bg-slate-400"
+                    onClick={()=> {
+                      selectedService
+                      const el = document.getElementById(service.title.replace(/\s+/g, '-').toLowerCase());
+                      if(el){
+                        el.scrollIntoView({ behavior: 'smooth' });
+                      }
+                     }}
+                    >{highlightText(service.title, searchQuery)}</h1>
+                    <p className="text-lightGray text-sm">{highlightText(service.subTitle,searchQuery)}</p>
+                   </div>
+                  ))}
+                </div>
+              )}
+
+              {filteredCards.length > 0 && (
+                <div className="mt-3">
+                <h3 className="text-terracotta font-semibold text-lg mb-2">Projects</h3>
+                <div className="list-disc list-inside text-sm text-lightGray">
+                  {filteredCards.map((card, id) => (
+                    <div
+                    key={id}
+                    className="flex flex-col gap-2"
+                    >
+                     <h1 className="text-black bg-slate-300 w-fit p-2 rounded-2xl font-semibold cursor-pointer hover:bg-slate-400">{highlightText(card.name, searchQuery)}</h1>
+                     <p></p>
+                    </div>
+                  ))}
+                </div>
+              </div>
+              )}
+            </div>
+        )}
+
+        {filteredService.length === 0 && filteredCards.length ===0 && (
+          <div className="absolute bg-slate-200 border-teal p-3 rounded mb-5 w-full px-4 md:px-8 lg:px-32 mx-auto z-50 shadow-xl">
+            <p className="text-center">No Result Found For: <span className="bg-teal text-white font-bold p-1 rounded">{searchQuery}</span></p>
+          </div>
+        )}
       {/* Image Part */}
       <div className="w-full md:h-96 h-60 relative overflow-hidden">
       <div className="h-96 w-full bg-gradient-to-r from-charcoal/70 to-transparent absolute z-10" />
@@ -119,7 +173,7 @@ const Home = () => {
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute top-6 md:top-12 left-6 md:left-36 transform -translate-x-1/2 w-full max-w-[350px] md:max-w-[1250px] mx-auto flex flex-col z-20 "
+          className="absolute top-6 md:top-12 left-6 md:left-36 transform -translate-x-1/2 w-full max-w-[350px] md:max-w-[1250px] mx-auto flex flex-col z-20"
         >
           <p className="text-white text-[15px] mb-3">
             Welcome to CityWide Market
@@ -156,6 +210,7 @@ const Home = () => {
             {CardDetails.map((card, index) => (
               <div
                 key={index}
+                id= {card.name.replace(/\s+/g, '-').toLowerCase()}
                 className="bg-black w-[350px] h-64 relative transform ease-in-out duration-300 hover:-translate-y-2 cursor-pointer"
               >
                 <img
@@ -188,6 +243,7 @@ const Home = () => {
           {ServiceDetails.map((service, index) => (
             <div
               key={index}
+              id = {service.title.replace(/\s+/g, '-').toLowerCase()}
               className="bg-softCream min-w-[200px] w-[200px] md:w-[400px] h-16 rounded flex items-center cursor-pointer transition-transform duration-300 ease-in-out hover:bg-sunshineYellow"
               onClick={() => setSelectedService(service)}
             >
@@ -196,7 +252,7 @@ const Home = () => {
                 <p className="text-charcoal font-bold text-[14px] md:text-[20px]">
                   {service.title}
                 </p>
-                <p className="text-lightGray text-[12px]">{service.subTitle}</p>
+                <p className="text-lightGray text-[12px]">{highlightText(service.subTitle, searchQuery)}</p>
               </div>
             </div>
           ))}
@@ -208,7 +264,8 @@ const Home = () => {
       </div>
 
       {selectedService && (
-        <div className="bg-black w-full min-h-screen fixed inset-0 bg-opacity-50 flex justify-center items-center z-50">
+        <div 
+        className="bg-black w-full min-h-screen fixed inset-0 bg-opacity-50 flex justify-center items-center z-50">
           <div className="bg-softCream w-[400px] p-6 rounded-lg shadow-lg relative" ref={ServiceRef}>
             <button
               className="absolute top-2 right-3 text-white text-xl bg-terracotta p-1 rounded-full"
@@ -225,10 +282,10 @@ const Home = () => {
                 {selectedService.subTitle}
               </h1>
               <p className="text-[15px] font-semibold text-terracotta">
-                {selectedService.subTitle}
+                {highlightText(selectedService.subTitle, searchQuery)}
               </p>
               <p className="text-[12px] font-normal text-lightGray">
-                {selectedService.description}
+                {highlightText(selectedService.description, searchQuery)}
               </p>
             </div>
           </div>
