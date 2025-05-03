@@ -1,6 +1,6 @@
 import { JSX, useEffect } from "react";
 import { useState, useRef,useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import consimage1 from "../assets/construction1.jpg";
 import consimage2 from '../assets/construction2.jpg'
 import { CardDetails, Choose,ServiceDetails } from "../Data/Data.tsx";
@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import engineer from "../assets/workers.png";
 import { SearchContext } from "../Context/SearchContext.tsx";
 import highlightText from '../Data/highlightedText.tsx'
-import FilteredItem from "./FilteredItem.tsx";
+import FilteredItem from "./SearchedItem.tsx";
 
 interface serviceProps {
   title: string;
@@ -19,13 +19,13 @@ interface serviceProps {
 }
 
 const Home = () => {
-
   const [selectedService, setSelectedService] = useState<serviceProps | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
   const ServiceRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate();
+  const location = useLocation()
   const [current, setCurrent] = useState(0)
-  const {searchQuery} = useContext(SearchContext)
+  const {searchQuery} = useContext(SearchContext) 
 
 
   const images = [consimage1,consimage2]
@@ -72,6 +72,14 @@ const Home = () => {
     }
   })
 
+  useEffect(()=>{
+    if(location.hash){
+      const el = document.getElementById(location.hash.slice(1));
+      if (el) {
+        el.scrollIntoView({ behavior: 'smooth' });
+      }
+    }
+  },[location])
   return (
     <div className="w-full min-h-scree font-poppins">
         <FilteredItem />

@@ -9,7 +9,7 @@ import image5 from '../assets/construction1.jpg'
 import image6 from '../assets/construction2.jpg'
 import image7 from '../assets/Finished House.jpg'
 import image8 from '../assets/arch house.jpg'
-import { HardHat,PencilRuler,Hammer } from 'lucide-react'
+import { HardHat,PencilRuler,Hammer, Home, CalendarDays, ShoppingBag } from 'lucide-react'
 import { JSX } from 'react'
 
 
@@ -217,5 +217,33 @@ export const ServiceDetails: serviceProps[] = [
       icon: <Hammer className="w-4 h-4 md:w-8 md:h-8 text-charcoal" />,
       description:
         "We supply high-quality building materials that support long-lasting and energy-efficient construction. Our range includes cement, bricks, roofing, steel, insulation, and interior finishes—all carefully sourced to meet industry standards. Whether you're a contractor, builder, or DIY enthusiast, our materials ensure your project is built on a strong and sustainable foundation.",
+    },
+  ];
+
+  export const navLinks = [
+    { id: 1, name: "Home", icon: <Home size={14}/> },
+    { id: 2, name: "Design", icon: <PencilRuler size={14}/>,
+      designSubLinks: [
+        {id: 1, title: "Modern design", descr: "Clean lines and minimalist aestethics"},
+        {id: 2, title: "Traditional", descr: "Official buildings and retail spaces"},
+        {id: 3, title: "Sustainable Design", descr: "Schools, Hospital and Public buildings"},
+      ],
+    },
+    {id: 3, name: "Projects", icon: <CalendarDays size={14}/>,
+      projectSubLinks: [
+        {id: 1, title: "Residential", descr: "Customs homes and Residential buildings"},
+        {id: 2, title: "Commercial", descr: "Official buildings and retail spaces"},
+        {id: 3, title: "Institutional", descr: "Schools, Hospital and Public buildings"},
+      ],
+    },
+    {
+      id: 4,
+      name: "Store",
+      icon: <ShoppingBag size={14}/>,
+      storeSubLinks: [
+        {id: 1, title: "Building Materials", descr: "Cement, bricks and structure components"},
+        {id: 2, title: "Finishes", descr: "Paints, Flooring and Decorative elements"},
+        {id: 3, title: "Sustainable Materials", descr: "Eco-friendly and recycled building products"},
+      ],
     },
   ];

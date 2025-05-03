@@ -4,7 +4,7 @@ import { Search, X } from "lucide-react";
 import {motion}  from 'framer-motion'
 import { ChevronDown,ChevronUp,Filter,SquareCheckBigIcon,Square } from "lucide-react";
 import { DesignCards } from "../Data/Data";
-import FilteredItem from "../Components/FilteredItem";
+import FilteredItem from "../Components/SearchedItem";
 
 interface ArchProps {
   addToCart: (item: any) => void

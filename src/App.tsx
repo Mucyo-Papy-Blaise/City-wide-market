@@ -58,8 +58,8 @@ const App:React.FC = () => {
         <Router>
         <NavBar cartItems ={cartItems} removeCart={removeFromCart} deleteCart={deleteCart}/>
         <Routes>
-          <Route path='/' element = {<Home />} />
-          <Route path='/Designs' element ={<ArchitecturePage addToCart={addToCart}/>} />
+          <Route path='/Home' element = {<Home />} />
+          <Route path='/Designs/:id' element ={<ArchitecturePage addToCart={addToCart}/>} />
           <Route path='/ViewMore/:id' element ={<ViewMore addToCart={addToCart} />} /> 
         </Routes >
         <Footer />

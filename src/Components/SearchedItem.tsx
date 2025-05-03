@@ -1,11 +1,14 @@
-import { useContext} from "react";
+import { useContext, useEffect,useRef} from "react";
 import { SearchContext } from "../Context/SearchContext.tsx";
 import highlightText from '../Data/highlightedText.tsx'
+import { useNavigate } from "react-router-dom";
 
 const FilteredItem = () => {
-    const {searchQuery} = useContext(SearchContext)
+    const navigate = useNavigate()
+    const {searchQuery, setSearchQuery} = useContext(SearchContext)
     const {allData} =  useContext(SearchContext)
-
+    const searchRef = useRef<HTMLDivElement>(null)
+    
     const filteredService = allData.services.filter((service)=>
         service.title.toLowerCase().includes(searchQuery.trim().toLowerCase()) ||
         service.subTitle.toLowerCase().includes(searchQuery.trim().toLowerCase())
@@ -20,11 +23,25 @@ const FilteredItem = () => {
         card.title.toLowerCase().includes(searchQuery.trim().toLowerCase()) ||
         card.subDescr.toLowerCase().includes(searchQuery.trim().toLowerCase())
       )
+
+      useEffect(()=> {
+        const handleClickOutside =(e: MouseEvent)=>{
+          if(searchRef.current && !searchRef.current.contains(e.target as Node)){
+            setSearchQuery('')
+          }
+        }
+
+        document.addEventListener('mousedown',handleClickOutside)
+
+        return ()=>{
+          document.removeEventListener('mousedown',handleClickOutside)
+        }
+      },[setSearchQuery])
     
   return (
-    <div>
+    <div ref={searchRef}>
       {searchQuery && (filteredService.length > 0 || filteredHomeCards.length > 0 || filteredCards.length > 0) && (
-           <div className="fixed bg-slate-200 border-teal p-3 max-h-[500px] top-[70px] rounded mb-5 w-[700px] right-10 z-50 overflow-y-auto shadow-xl">
+           <div className="absolute bg-slate-200 border-teal p-3 max-h-[500px] top-[55px] md:top-[70px] rounded mb-5 w-full md:w-[700px] right-0 md:right-10 z-50 overflow-y-auto shadow-xl">
               <h2 className="text-charcoal font-bold mb-2 text-[16px]">Quick Results:</h2>
               {filteredService.length > 0 && (
                 <div className="flex flex-col gap-2 text-sm">
@@ -33,14 +50,21 @@ const FilteredItem = () => {
                    <div
                    key={id}
                    className="flex flex-col gap-2 rounded cursor-pointer"
-                   >
-                    <h1 className="text-black bg-slate-300 w-fit p-2 rounded-2xl font-semibold cursor-pointer"
-                    onClick={()=> {
-                      const el = document.getElementById(service.title.replace(/\s+/g, '-').toLowerCase());
+                   onClick={()=>{
+                    const itemId = service.title.replace(/\s+/g, '-').toLowerCase();
+
+                    if(window.location.pathname === '/Home'){
+                      const el = document.getElementById(itemId)
                       if(el){
                         el.scrollIntoView({ behavior: 'smooth' });
+                      } else{
+                        navigate(`/Home#${itemId}`);
                       }
-                     }}
+                    }
+                    setSearchQuery('')
+                   }}
+                   >
+                    <h1 className="text-black bg-slate-300 w-fit p-2 rounded-2xl font-semibold cursor-pointer"
                     >{highlightText(service.title, searchQuery)}</h1>
                     <p className="text-lightGray text-sm">{highlightText(service.subTitle,searchQuery)}</p>
                     <div className="bg-[#bcbcbc] h-[1px] w-full mb-3" />
@@ -56,6 +80,19 @@ const FilteredItem = () => {
                     <div
                     key={id}
                     className="flex flex-col gap-2 p-2 rounded cursor-pointer"
+                    onClick={()=>{
+                      const itemId = card.name.replace(/\s+/g, '-').toLowerCase();
+
+                    if(window.location.pathname === '/Home'){
+                      const el = document.getElementById(itemId)
+                      if(el){
+                        el.scrollIntoView({ behavior: 'smooth' });
+                      } else{
+                        navigate(`/Home#${itemId}`);
+                      }
+                    }
+                    setSearchQuery('')
+                    }}
                     >
                      <h1 className="text-black bg-slate-300 w-fit p-2 rounded-2xl font-semibold cursor-pointer">{highlightText(card.name, searchQuery)}</h1>
                      <div className="bg-[#bcbcbc] h-[1px] w-full mb-3" />
@@ -71,6 +108,19 @@ const FilteredItem = () => {
                     <div
                      key={id}
                      className="flex flex-col gap-2 hover:bg-slate-400 p-2 rounded cursor-pointer"
+                     onClick={()=>{
+                      const itemId = card.title.replace(/\s+/g, '-').toLowerCase();
+
+                    if(window.location.pathname === '/Designs'){
+                      const el = document.getElementById(itemId)
+                      if(el){
+                        el.scrollIntoView({ behavior: 'smooth' });
+                      } else{
+                        navigate(`/Designs#${itemId}`);
+                      }
+                    }
+                    setSearchQuery('')
+                     }}
                     >
                       <div className="flex flex-col">
                         <div className="flex flex-row items-center">
