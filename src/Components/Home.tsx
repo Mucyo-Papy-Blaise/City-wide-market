@@ -1,57 +1,34 @@
-import React, { JSX } from "react";
-import { useState, useRef } from "react";
+import { JSX, useEffect } from "react";
+import { useState, useRef,useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import consimage1 from "../assets/construction1.jpg";
-import { CardDetails, Choose } from "../Data/Data.ts";
-import {
-  HardHat,
-  PencilRuler,
-  Hammer,
-  ArrowRightCircle,
-  X,
-  ArrowRightCircleIcon,
-  ArrowLeftCircleIcon,
-} from "lucide-react";
+import consimage2 from '../assets/construction2.jpg'
+import { CardDetails, Choose,ServiceDetails } from "../Data/Data.tsx";
+import {ArrowRightCircle,X,ArrowRightCircleIcon,ArrowLeftCircleIcon,} from "lucide-react";
 import { motion } from "framer-motion";
 import engineer from "../assets/workers.png";
+import { SearchContext } from "../Context/SearchContext.tsx";
+import highlightText from '../Data/highlightedText.tsx'
+import FilteredItem from "./FilteredItem.tsx";
 
-const Home: React.FC = () => {
-  interface serviceProps {
-    title: string;
-    subTitle: string;
-    icon: JSX.Element;
-    description: string;
-  }
+interface serviceProps {
+  title: string;
+  subTitle: string;
+  icon: JSX.Element;
+  description: string;
+}
 
-  const [selectedService, setSelectedService] = useState<serviceProps | null>(
-    null
-  );
+const Home = () => {
+
+  const [selectedService, setSelectedService] = useState<serviceProps | null>(null);
   const scrollRef = useRef<HTMLDivElement>(null);
+  const ServiceRef = useRef<HTMLDivElement>(null)
   const navigate = useNavigate();
+  const [current, setCurrent] = useState(0)
+  const {searchQuery} = useContext(SearchContext)
 
-  const ServiceDetails: serviceProps[] = [
-    {
-      title: "Construction Service",
-      subTitle: "Implementation of Projects",
-      icon: <HardHat className="w-4 h-4 md:w-8 md:h-8 text-charcoal" />,
-      description:
-        "We offer professional construction services tailored to meet the specific needs of residential, commercial, and industrial projects. From the initial ground-breaking to the final finishing touches, our skilled team ensures quality craftsmanship, timely delivery, and adherence to safety standards. Whether it’s new construction, renovations, or expansions, we bring your vision to life with precision and reliability.",
-    },
-    {
-      title: "Architecture Service",
-      subTitle: "Design and Planning",
-      icon: <PencilRuler className="w-4 h-4 md:w-8 md:h-8 text-charcoal" />,
-      description:
-        "Our architecture services blend creativity, functionality, and innovation to design spaces that inspire and endure. We work closely with clients to develop customized plans that reflect their lifestyle, business goals, or community needs. From concept development to detailed blueprints and 3D modeling, we provide solutions that are both aesthetically pleasing and structurally sound.",
-    },
-    {
-      title: "Building Materials",
-      subTitle: "Supply of Quality Materials",
-      icon: <Hammer className="w-4 h-4 md:w-8 md:h-8 text-charcoal" />,
-      description:
-        "We supply high-quality building materials that support long-lasting and energy-efficient construction. Our range includes cement, bricks, roofing, steel, insulation, and interior finishes—all carefully sourced to meet industry standards. Whether you're a contractor, builder, or DIY enthusiast, our materials ensure your project is built on a strong and sustainable foundation.",
-    },
-  ];
+
+  const images = [consimage1,consimage2]
 
   const scrollLeft = () => {
     if (scrollRef.current) {
@@ -65,21 +42,58 @@ const Home: React.FC = () => {
     }
   };
 
+  useEffect(()=>{
+    const interval = setInterval(()=>{
+      setCurrent((prev) => (prev + 1) % images.length)
+    },10000)
+
+    return () => clearInterval(interval)
+  }, [images.length])
+
+  useEffect(()=>{
+    const handleClickOutside =(e: MouseEvent)=>{
+      if(ServiceRef.current && !ServiceRef.current.contains(e.target as Node)){
+        setSelectedService(null)
+      }
+    }
+
+    document.addEventListener('mousedown',handleClickOutside)
+
+    return ()=>{
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  },[])
+
+  useEffect(()=>{
+    if(selectedService){
+      document.body.style.overflow = 'hidden'
+    }else{
+      document.body.style.overflow = 'auto'
+    }
+  })
+
   return (
     <div className="w-full min-h-scree font-poppins">
+        <FilteredItem />
       {/* Image Part */}
-      <div className="w-full md:h-80 h-60 bg-blue-600 relative overflow-hidden">
-        <img
-          src={consimage1}
-          alt="constructio-image"
-          className="w-full h-full object-cover"
+      <div className="w-full md:h-96 h-60 relative overflow-hidden">
+      <div className="h-96 w-full bg-gradient-to-r from-charcoal/70 to-transparent absolute z-10" />
+        {images.map((img, index)=>
+          <img
+          key={index}
+          src={img}
+          alt={`image ${index}`}
+          className={`absolute w-full h-full object-cover ${
+            index === current ? "opacity-100 " : "opacity-0"
+          }`}
         />
+        )}
 
         <motion.div
           initial={{ opacity: 0, x: 50 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ duration: 1.5, ease: "easeOut" }}
-          className="absolute top-6 md:top-12 left-6 md:left-36 transform -translate-x-1/2 w-full max-w-[350px] md:max-w-[1250px] mx-auto flex flex-col"
+          className="absolute top-6 md:top-12 left-6 md:left-36 transform -translate-x-1/2 w-full max-w-[350px] md:max-w-[1250px] mx-auto flex flex-col z-20"
         >
           <p className="text-white text-[15px] mb-3">
             Welcome to CityWide Market
@@ -93,13 +107,13 @@ const Home: React.FC = () => {
 
           <div className="flex flex-row text-white mt-8 gap-10 md:gap-20">
             <button
-              className="p-[10px] bg-teal rounded-[5px] text-[15px] cursor-pointer hover:bg-[#4dbcaf]"
+              className="p-[10px] bg-teal rounded-[5px] text-[15px] cursor-pointer hover:bg-[#4dbcaf] poin"
               onClick={() => navigate("/Designs")}
             >
               Explore Design
             </button>
             <button className="p-[10px] bg-terracotta rounded-[5px] text-[15px] cursor-pointer hover:bg-[#db816a]">
-              Explore Design
+              Explore Products
             </button>
           </div>
         </motion.div>
@@ -116,7 +130,8 @@ const Home: React.FC = () => {
             {CardDetails.map((card, index) => (
               <div
                 key={index}
-                className="bg-black w-[350px] h-64 relative hover:scale-105 transform ease-in-out duration-300 hover:border-2 cursor-pointer"
+                className="bg-black w-[350px] h-64 relative transform ease-in-out duration-300 hover:-translate-y-2 cursor-pointer"
+                onClick={()=> navigate('/Designs')}
               >
                 <img
                   src={card.photo}
@@ -136,7 +151,7 @@ const Home: React.FC = () => {
       </div>
 
       {/* Service Part */}
-      <div className="bg-charcoal flex flex-row w-full gap-2 md:p-5 p-3">
+      <div className="bg-charcoal flex flex-row items-center w-full gap-2 md:p-5 p-3">
         <ArrowLeftCircleIcon
           className="w-10 h-10 text-white flex md:hidden cursor-pointer hover:text-terracotta"
           onClick={scrollLeft}
@@ -148,7 +163,8 @@ const Home: React.FC = () => {
           {ServiceDetails.map((service, index) => (
             <div
               key={index}
-              className="bg-softCream min-w-[200px] w-[200px] md:w-[400px] h-16 rounded flex items-center cursor-pointer transition-transform duration-300 ease-in-out hover:scale-105 hover:bg-sunshineYellow"
+              id = {service.title.replace(/\s+/g, '-').toLowerCase()}
+              className="bg-softCream min-w-[200px] w-[200px] md:w-[400px] h-16 rounded flex items-center cursor-pointer transition-transform duration-300 ease-in-out hover:bg-sunshineYellow"
               onClick={() => setSelectedService(service)}
             >
               <p className="p-2 md:p-4 ">{service.icon}</p>
@@ -156,7 +172,7 @@ const Home: React.FC = () => {
                 <p className="text-charcoal font-bold text-[14px] md:text-[20px]">
                   {service.title}
                 </p>
-                <p className="text-lightGray text-[12px]">{service.subTitle}</p>
+                <p className="text-lightGray text-[12px]">{highlightText(service.subTitle, searchQuery)}</p>
               </div>
             </div>
           ))}
@@ -168,8 +184,9 @@ const Home: React.FC = () => {
       </div>
 
       {selectedService && (
-        <div className="bg-black w-full min-h-screen fixed inset-0 bg-opacity-50 flex justify-center items-center z-50">
-          <div className="bg-softCream w-[400px] p-6 rounded-lg shadow-lg relative">
+        <div 
+        className="bg-black w-full min-h-screen fixed inset-0 bg-opacity-50 flex justify-center items-center z-50">
+          <div className="bg-softCream w-[400px] p-6 rounded-lg shadow-lg relative" ref={ServiceRef}>
             <button
               className="absolute top-2 right-3 text-white text-xl bg-terracotta p-1 rounded-full"
               onClick={() => setSelectedService(null)}
@@ -185,10 +202,10 @@ const Home: React.FC = () => {
                 {selectedService.subTitle}
               </h1>
               <p className="text-[15px] font-semibold text-terracotta">
-                {selectedService.subTitle}
+                {highlightText(selectedService.subTitle, searchQuery)}
               </p>
               <p className="text-[12px] font-normal text-lightGray">
-                {selectedService.description}
+                {highlightText(selectedService.description, searchQuery)}
               </p>
             </div>
           </div>

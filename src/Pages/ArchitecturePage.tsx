@@ -1,11 +1,18 @@
-import React, { useState,useRef, useEffect } from "react";
+import { useState,useRef, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import { Search, X } from "lucide-react";
 import {motion}  from 'framer-motion'
 import { ChevronDown,ChevronUp,Filter,SquareCheckBigIcon,Square } from "lucide-react";
 import { DesignCards } from "../Data/Data";
+import FilteredItem from "../Components/FilteredItem";
+
+interface ArchProps {
+  addToCart: (item: any) => void
+}
 
 
-const ArchitecturePage: React.FC = () => {
+const ArchitecturePage=({addToCart}: ArchProps) => {
+  const navigate = useNavigate()
   const [isSortOpen, setIsSortOpen] = useState<boolean>(false)
   const [selectedSort, setSelectedSort] = useState<number | null>(null)
   const dropDownRef = useRef<HTMLDivElement>(null)
@@ -14,7 +21,13 @@ const ArchitecturePage: React.FC = () => {
   const [clickedStyleIcon, setclickedStyleIcon] =  useState<number | null>(null)
   const [clickedBedIcon, setClickedBedIcon] = useState<number | null>(null)
   const [filterCard, setFilteredCards] = useState(DesignCards)
-  const [activeFilters, setActiveFilters] = useState({style: null as Number | null , bedRooms: null as Number | null})
+  const [activeFilters, setActiveFilters] = useState({style: null as number | null , bedRooms: null as number | null})
+
+  const getCardImage = (card: { images: string | string[]; }) => {
+    if (!Array.isArray(card.images) || card.images.length === 0) return "";
+    if (typeof card.images[0] === "string") return card.images[0];
+    return Object.values(card.images[0])[1] as string;
+  };
  
   // HandleFilterOpen Toggle
   const handleFilterOpen = () =>{
@@ -115,21 +128,11 @@ useEffect(() => {
   };
 }, [isFilterOpen]);
 
-// Unable Scroll When the Filter is Open
-  useEffect(()=>{
-    if(isFilterOpen){
-      document.body.style.overflow = "hidden"
-    }else{
-      document.body.style.overflow = "auto"
-    }
-    return ()=> {
-      document.body.style.overflow = "hidden"
-    }
-  },[isFilterOpen])
 
   // Apply Filters style on Card
   const applyFilters = () => {
-    let result = [...DesignCards]
+    let result = [...
+      DesignCards]
 
     // filter style
     if(clickedStyleIcon !== null){
@@ -171,17 +174,18 @@ useEffect(() => {
       style: null,
       bedRooms: null
     });
-  }
+  } 
 
   return (
-    <div className="bg-[#F8F9FA] relative container mx-auto px-4 md:px-8 lg:px-40 font-poppins">
-        <div className="mt-5 gap-5 flex flex-col">
+    <div className="bg-softCream w-full min-h-scree font-poppins">
+        <FilteredItem />
+        <div className="mt-5 gap-5 flex flex-col relative container mx-auto px-4 md:px-8 lg:px-40">
           <h1 className="text-charcoal font-bold text-[20px]">
             Architectural Designs
           </h1>
           
           {/* Search */}
-          <div className="flex flex-row justify-between items-center w-full">
+          <div className="flex flex-col md:flex-row md:justify-between md:items-center w-full gap-2">
             <div className="flex relative items-center flex-1">
               <Search className="absolute w-4 h-4 ml-2" />
               <input
@@ -191,8 +195,9 @@ useEffect(() => {
               />
             </div>
 
+            <div className="flex flex-row">
             <div
-             className="ml-4 w-40 h-10 gap-1 flex flex-row justify-center items-center rounded border-2 border-[#939393] cursor-pointer relative"
+             className="ml-0 md:ml-4 w-40 h-10 gap-1 flex flex-row justify-center items-center rounded border-2 border-[#939393] cursor-pointer relative"
              onClick={(e)=> {
               e.stopPropagation()
               setIsSortOpen(!isSortOpen)
@@ -201,7 +206,8 @@ useEffect(() => {
               <p 
               onClick={(e)=> e.stopPropagation()}
               className="text-[13px]"
-              >{Sorts[selectedSort ?? 0]}</p>
+              >{Sorts[selectedSort ?? 0]}
+              </p>
               {isSortOpen ? <ChevronUp className="w-5 h-5"/> : <ChevronDown className="w-5 h-5"/>}
 
               {isSortOpen && (
@@ -242,16 +248,22 @@ useEffect(() => {
               <Filter className="w-4 h-4"/>
               <p className="text-[15px]">Filter</p>
             </div>
+            </div>
 
             {isFilterOpen && (
               <motion.div 
-                initial={{ opacity: 0, x: 50 }}
-                animate={{ opacity: 1, x: 0 }}
-                transition={{ duration: 0.5, ease: "easeOut" }}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.4 }}
                 className="bg-black/50 fixed inset-0 z-50"
                 onClick={()=> setIsFilterOpen(false)}
               >
-                  <div 
+                  <motion.div
+                    initial={{ x: "100%" }}
+                    animate={{ x: 0 }}
+                    exit={{ x: "100%" }}
+                    transition={{ type: "tween", duration: 0.4, ease: "easeInOut" }} 
                     ref={filterRef}
                     className="bg-white right-0 ml-auto w-[350px] h-full p-8 flex flex-col gap-2"
                     onClick={(e) => e.stopPropagation()}
@@ -315,7 +327,7 @@ useEffect(() => {
                             Reset
                           </button>
                       </div>
-                  </div>
+                  </motion.div>
               </motion.div >
             )}
             </div> 
@@ -341,31 +353,52 @@ useEffect(() => {
                   </button>
             </div>
           )}
-          <div className="grid grid-cols-[repeat(auto-fill,minmax(370px,1fr))] gap-x-8 gap-y-5 w-full  mb-5">
+          <div className="grid sm:grid-cols-1 md:grid-cols-2 lg:grid-cols-[repeat(auto-fill,minmax(370px,1fr))] gap-4 sm:gap-3 md:gap-5 lg:gap-8 w-full mb-5">
             {filterCard.length > 0 ? (
-              filterCard.map((card)=>
+              filterCard.map((item)=>
                 <div
-                 key={card.id}
-                 className="bg-softCream w-[390px] pb-2 h-[430px] border-2 border-[#939393] hover:border-terracotta rounded-[10px] overflow-hidden shadow-xl transition-all duration-300 cursor-pointer"
+                 key={item.id}
+                 className="bg-softCream w-[360px] md:w-[390px] pb-2 h-[430px] border-2 border-[#939393] hover:border-terracotta rounded-[10px] overflow-hidden shadow-xl transition-all duration-300 cursor-pointer"
                  >
                  <div className="w-full h-52 overflow-hidden">
-                    <img src={card.image} alt={card.subDescr} className="w-full h-full object-cover hover:opacity-50"/>
+                    <img 
+                    src={getCardImage(item)} 
+                    alt={item.subDescr} 
+                    className="w-full h-full object-cover hover:opacity-50"/>
                  </div>
   
                  <div className=" flex flex-row items-center gap-5 mt-2 px-5">
-                  <p className="text-black bg-[#e0e0e0]  w-[90px] rounded-xl text-[12px] text-center">{card.type}</p>
-                  <p className="text-black bg-[#e0e0e0]  w-[90px] rounded-xl text-[12px] text-center">{card.bedRoom}</p>
+                  <p className="text-black bg-[#e0e0e0]  w-[90px] rounded-xl text-[12px] text-center">{item.type}</p>
+                  <p className="text-black bg-[#e0e0e0]  w-[90px] rounded-xl text-[12px] text-center">{item.bedRoom}</p>
                  </div>
   
                  <div className="px-5 mt-3">
-                    <h1 className="text-charcoal font-bold text-[20px] mb-2">{card.title}</h1>
-                    <p className="text-lightGray text-[13px] mb-2">{card.subDescr}</p>
-                    <p className="text-black font-bold text-[20px] mb-2">{card.price}</p>
+                    <h1 className="text-charcoal font-bold text-[20px] mb-2">{item.title}</h1>
+                    <p className="text-lightGray text-[13px] mb-2">{item.subDescr}</p>
+                    <p className="text-black font-bold text-[20px] mb-2">{item.price.toLocaleString()} RWF</p>
                  </div>
   
                  <div className="flex flex-row px-5 mt-3 justify-between">
-                    <button className="border-2 border-[#939393] p-2 w-36 text-[12px] rounded-lg">View Details</button>
-                    <button className="bg-teal p-2 w-36 text-[12px] rounded-lg text-black">Purchase</button>
+                    <button className="border-2 border-[#939393] p-2 w-36 text-[12px] rounded-lg"
+                    onClick={()=> navigate(`/ViewMore/ ${item.id}`)}
+                    >
+                      View Details
+                    </button>
+                    <button className="bg-teal p-2 w-36 text-[12px] rounded-lg text-black"
+                    onClick={(e)=>{
+                      e.stopPropagation()
+                      addToCart({
+                        id: item.id,
+                        title: item.title,
+                        subDescr: item.subDescr,
+                        price: Number(item.price),
+                        image: getCardImage(item),
+                        quantity: 1
+                      })
+                    }}
+                    >
+                      Purchase
+                    </button>
                  </div>
                 </div>
               )

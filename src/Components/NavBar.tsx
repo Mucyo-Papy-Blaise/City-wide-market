@@ -1,179 +1,270 @@
-import React, { useState, useRef, useEffect } from "react";
+import { useState, useRef, useEffect,useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/City-wide.png";
-import { Menu, X, ChevronDown, ChevronUp, Search } from "lucide-react";
+import { Menu, X, ChevronDown, ChevronUp,Search, Home, PencilRuler, CalendarDays, ShoppingBag, ShoppingCartIcon} from "lucide-react";
+import Cart from "./Cart";
+import {motion} from 'framer-motion'
+import Footer from "./Footer";
+import { SearchContext } from "../Context/SearchContext";
 
-const navLinks = [
-  { id: 1, name: "Home" },
-  { id: 2, name: "Projects" },
-  {
-    id: 3,
-    name: "Materials",
-    icon: <ChevronDown />,
-    subLinks: [
-      "Concrete & Masonry",
-      "Roofing",
-      "Hardware & Fasteners",
-      "Plumbing Supplies",
-      "Tools",
-    ],
-  },
-];
+interface NavProps{
+  cartItems: any[];
+  removeCart: (id: any) => void;
+  deleteCart: () => void,
+}
 
-const NavBar: React.FC = () => {
-  const navigate = useNavigate()
+const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
+  const navigate = useNavigate();
   const [activeLink, setActiveLink] = useState<number | null>(null);
   const [isMaterialOpen, setIsMaterialOpen] = useState<boolean>(false);
+  const [isDesignOpen, setIsDesignOpen] = useState<boolean>(false);
+  const [isProjectOpen, setIsProjectOpen] = useState<boolean>(false);
   const [isMobileOpen, setIsMobileOpen] = useState<boolean>(false);
   const [isSearchOpen, setIsSearchOpen] = useState<boolean>(false);
-  const dropDownRef = useRef<HTMLDivElement>(null);
-  const materialsRef = useRef<HTMLDivElement>(null)
-
+  const [isCartOpen, setIsCartOpen] = useState<boolean>(false)
+  const storeTriggerRef = useRef<HTMLDivElement>(null);
+  const designTriggerRef = useRef<HTMLDivElement>(null);
+  const projectTriggerRef = useRef<HTMLDivElement>(null);
+  const storeDropdownRef = useRef<HTMLDivElement>(null);
+  const designDropdownRef = useRef<HTMLDivElement>(null);
+  const projectDropdownRef = useRef<HTMLDivElement>(null);
+  const mobileRef = useRef<HTMLDivElement>(null)
+  const {setSearchQuery} = useContext(SearchContext)
+ 
   const toggleMobile = () => {
     setIsMobileOpen(!isMobileOpen);
   };
 
+  const toggleCart =()=>{
+    setIsCartOpen(!isCartOpen)
+  }
+
   useEffect(() => {
-
-    if(!isMaterialOpen) return;
-
     const handleClickOutside = (e: MouseEvent) => {
       if (
-        dropDownRef.current && !dropDownRef.current.contains(e.target as Node) && 
-        materialsRef.current && !materialsRef.current.contains(e.target as Node)
+        isMaterialOpen &&
+        storeTriggerRef.current &&
+        !storeTriggerRef.current.contains(e.target as Node) &&
+        storeDropdownRef.current &&
+        !storeDropdownRef.current.contains(e.target as Node)
       ) {
-        setIsMaterialOpen(false)
+        setIsMaterialOpen(false);
       }
 
-      setTimeout(()=>{
-        document.addEventListener("mousedown", handleClickOutside)
-      },10)
-    };
-    return (
-      document.addEventListener("mousedown", handleClickOutside)
-    )
-  },[isMaterialOpen]);
+      if (
+        isDesignOpen &&
+        designTriggerRef.current &&
+        !designTriggerRef.current.contains(e.target as Node) &&
+        designDropdownRef.current &&
+        !designDropdownRef.current.contains(e.target as Node)
+      ) {
+        setIsDesignOpen(false);
+      }
 
+      if (
+        isProjectOpen &&
+        projectTriggerRef.current &&
+        !projectTriggerRef.current.contains(e.target as Node) &&
+        projectDropdownRef.current &&
+        !projectDropdownRef.current.contains(e.target as Node)
+      ) {
+        setIsProjectOpen(false);
+      } 
+      
+    };
+
+    if (isMaterialOpen || isDesignOpen || isProjectOpen) {
+      document.addEventListener("mousedown", handleClickOutside);
+    }
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [isMaterialOpen, isDesignOpen, isProjectOpen]);
+  
+  useEffect(()=>{
+    const handleClickMobileOutside =(e: MouseEvent)=>{
+      if(isMobileOpen && mobileRef.current && !mobileRef.current.contains(e.target as Node)){
+        setIsMobileOpen(false)
+      }
+    }
+    document.addEventListener("mousedown", handleClickMobileOutside)
+
+    return ()=>{
+      document.removeEventListener("mousedown",handleClickMobileOutside)
+    }
+  },[isMobileOpen])
+
+  useEffect(() => {
+    if (isMobileOpen || isCartOpen) {
+      document.body.style.overflow = 'hidden';
+    } else {
+      document.body.style.overflow = 'auto';
+    }
+  }, [isMobileOpen, isCartOpen]);
+
+  const navLinks = [
+    { id: 1, name: "Home", icon: <Home size={14}/> },
+    { id: 2, name: "Design", icon: <PencilRuler size={14}/>,
+      designSubLinks: [
+        {id: 1, title: "Modern design", descr: "Clean lines and minimalist aestethics"},
+        {id: 2, title: "Traditional", descr: "Official buildings and retail spaces"},
+        {id: 3, title: "Sustainable Design", descr: "Schools, Hospital and Public buildings"},
+      ],
+    },
+    {id: 3, name: "Projects", icon: <CalendarDays size={14}/>,
+      projectSubLinks: [
+        {id: 1, title: "Residential", descr: "Customs homes and Residential buildings"},
+        {id: 2, title: "Commercial", descr: "Official buildings and retail spaces"},
+        {id: 3, title: "Institutional", descr: "Schools, Hospital and Public buildings"},
+      ],
+    },
+    {
+      id: 4,
+      name: "Store",
+      icon: <ShoppingBag size={14}/>,
+      storeSubLinks: [
+        {id: 1, title: "Building Materials", descr: "Cement, bricks and structure components"},
+        {id: 2, title: "Finishes", descr: "Paints, Flooring and Decorative elements"},
+        {id: 3, title: "Sustainable Materials", descr: "Eco-friendly and recycled building products"},
+      ],
+    },
+  ];
+
+  const getRefForLink = (link: any) => {
+    if (link.storeSubLinks) return storeTriggerRef;
+    if (link.designSubLinks) return designTriggerRef;
+    if (link.projectSubLinks) return projectTriggerRef;
+    return null;
+  };
+
+  const handleClose = () =>{
+    setIsCartOpen(false)
+  }
+  
   return (
     <div className="w-full md:p-4 p-2 bg-charcoal relative">
-      <div className="flex flex-row items-center justify-between md:max-w-[1250px] max-w-[350px] mx-auto font-poppins">
-        <div className="flex items-center gap-2">
-          <img
-          onClick={() => navigate('/')}
-            src={logo}
-            alt="Logo Image"
-            className="md:w-32 md:h-8 w-16 h-4 cursor-pointer"
-          />
+      <div className="flex flex-row items-center justify-between px-4 md:px-8 lg:px-32 mx-auto font-poppins">
+        <div className="flex flex-row gap-16">
+          <div className="flex items-center gap-2">
+            <img
+              onClick={() => navigate('/')}
+              src={logo}
+              alt="Logo Image"
+              className="md:w-32 md:h-8 w-16 h-4 cursor-pointer"
+            />
 
-          <button
-            className="md:hidden flex"
-            onClick={() => setIsSearchOpen(true)}
-          >
-            {isSearchOpen ? (
-              <input
-                type="text"
-                name=""
-                id=""
-                className="md:w-[500px] w-[200px] md:flex md:h-8 h-2 p-3 outline-none bg-transparent border-2 border-[#E9ECEF] text-white text-[15px] rounded-lg focus:ring-2 ring-sunshineYellow"
-                placeholder="Search here..."
-              />
-            ) : (
-              <div className="text-white p-1 bg-teal rounded-full">
-                <Search className="w-3 h-3" />
-              </div>
-            )}
-          </button>
-        </div>
-        <input
-          type="text"
-          name=""
-          id=""
-          className="md:w-[500px] md:flex hidden md:h-8 p-3 outline-none bg-transparent border-2 border-[#E9ECEF] text-white text-[15px] rounded-lg focus:ring-2 ring-sunshineYellow"
-          placeholder="Search here..."
-        />
-
-        <div className="flex flex-row text-white gap-10">
-          <button onClick={toggleMobile} className="md:hidden">
-            {isMobileOpen ? <X /> : <Menu />}
-          </button>
-
-          {navLinks.map((link) => (
-            <div
-              key={link.id}
-              className={`md:flex hidden relative justify-center items-center space-x-1 cursor-pointer hover:text-terracotta z-20 ${
-                activeLink === link.id ? "text-terracotta" : ""
-              }`}
-              onClick={() => {
-                setActiveLink(link.id);
-                if (link.subLinks) {
-                  setIsMaterialOpen((prev) => !prev);
-                } else {
-                  setIsMaterialOpen(false);
-                }
-              }}
-             ref={link.id === 3 ? materialsRef : null}
+            <button
+              className="md:hidden flex"
+              onClick={() => setIsSearchOpen(true)}
             >
-              <span>{link.name}</span>
-              {link.subLinks && (
-                <span className="flex items-center w-4 h-4">
-                  {isMaterialOpen ? <ChevronUp /> : <ChevronDown />}
-                </span>
-              )}
-
-              {link.subLinks && isMaterialOpen && (
-                <div 
-                className="absolute left-0 top-full mt-2 w-48 bg-charcoal rounded-lg shadow-lg"
-                ref={dropDownRef}
-                >
-                  {link.subLinks.map((sublink, index) => (
-                    <div
-                      key={index}
-                      className="px-4 py-2 text-sm text-white hover:bg-sunshineYellow"
-                    >
-                      {sublink}
-                    </div>
-                  ))}
+              {isSearchOpen ? (
+                <input
+                  type="text"
+                  className="w-[200px] p-1 outline-none bg-transparent border-2 border-[#E9ECEF] text-white text-[12px] rounded-lg focus:ring-2 ring-sunshineYellow"
+                  placeholder="Search here..."
+                  onChange={(e)=> setSearchQuery(e.target.value)}
+                />
+              ) : (
+                <div className="text-white p-1 bg-teal rounded-full">
+                  <Search className="w-3 h-3" />
                 </div>
               )}
-            </div>
-          ))}
-          <button className="md:flex hidden p-[5px] bg-teal hover:bg-terracotta rounded-md">
-            Contact us
-          </button>
-        </div>
+            </button>
+          </div>
 
-        {isMobileOpen && (
-          <div className="block md:hidden absolute right-5 top-10 bg-charcoal w-36 p-3 rounded-b-md text-white z-50">
+          <div className="flex flex-row text-white gap-10">
             {navLinks.map((link) => (
               <div
                 key={link.id}
-                className={`p-2 flex relative${
-                  activeLink === link.id ? "text-sunshineYellow" : ""
+                className={`md:flex hidden relative justify-center items-center space-x-1 cursor-pointer hover:text-terracotta z-50${
+                  activeLink === link.id ? "text-terracotta" : ""
                 }`}
                 onClick={() => {
                   setActiveLink(link.id);
-                  if (link.subLinks) {
+                  if (link.storeSubLinks) {
                     setIsMaterialOpen((prev) => !prev);
+                    setIsDesignOpen(false);
+                    setIsProjectOpen(false);
+                  } else if (link.designSubLinks) {
+                    setIsDesignOpen((prev) => !prev);
+                    setIsMaterialOpen(false);
+                    setIsProjectOpen(false);
+                  } else if (link.projectSubLinks) {
+                    setIsProjectOpen((prev) => !prev);
+                    setIsDesignOpen(false);
+                    setIsMaterialOpen(false);
                   } else {
                     setIsMaterialOpen(false);
+                    setIsDesignOpen(false);
+                    setIsProjectOpen(false);
                   }
                 }}
+                ref={getRefForLink(link)}
               >
-                <span>{link.name}</span>
-                {link.icon && (
-                  <span>
-                    {isMaterialOpen ? <ChevronUp /> : <ChevronDown />}
+                <p className="flex flex-row gap-1 justify-center items-center text-sm">
+                  <span>{link.icon}</span>{link.name}
+                </p>
+                {(link.designSubLinks || link.projectSubLinks || link.storeSubLinks) && (
+                  <span className="flex items-center w-4 h-4">
+                    {link.designSubLinks && isDesignOpen ? (
+                      <ChevronUp />
+                    ) : link.projectSubLinks && isProjectOpen ? (
+                      <ChevronUp />
+                    ) : link.storeSubLinks && isMaterialOpen ? (
+                      <ChevronUp />
+                    ) : (
+                      <ChevronDown />
+                    )}
                   </span>
                 )}
 
-                {link.subLinks && isMaterialOpen && (
-                  <div className="absolute right-3 top-32 mt-2 bg-white rounded-lg shadow-lg border-[2px] border-teal">
-                    {link.subLinks.map((sublink, index) => (
+                {link.storeSubLinks && isMaterialOpen && (
+                  <div 
+                    className="absolute -left-16 top-full mt-3 w-60 bg-charcoal rounded-lg shadow-lg p-3 z-50"
+                    ref={storeDropdownRef}
+                  >
+                    {link.storeSubLinks.map((sublink) => (
                       <div
-                        key={index}
-                        className="px-4 py-2 text-sm text-black hover:bg-sunshineYellow"
+                        key={sublink.id}
+                        className="px-2 py-2 text-sm text-white hover:bg-teal/30 rounded-lg cursor-pointer"
                       >
-                        {sublink}
+                        <h1 className="font-bold">{sublink.title}</h1>
+                        <p className="text-whiteText text-[12px] font-thin">{sublink.descr}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {link.designSubLinks && isDesignOpen && (
+                  <div 
+                    className="absolute -left-16 top-full mt-3 w-60 bg-charcoal rounded-lg shadow-lg p-3 z-50"
+                    ref={designDropdownRef}
+                  >
+                    {link.designSubLinks.map((sublink) => (
+                      <div
+                        key={sublink.id}
+                        className="px-2 py-2 text-sm text-white hover:bg-teal/30 rounded-lg cursor-pointer"
+                      >
+                        <h1 className="font-bold">{sublink.title}</h1>
+                        <p className="text-whiteText text-[12px] font-thin">{sublink.descr}</p>
+                      </div>
+                    ))}
+                  </div>
+                )}
+
+                {link.projectSubLinks && isProjectOpen && (
+                  <div 
+                    className="absolute -left-16 top-full mt-3 w-60 bg-charcoal rounded-lg shadow-lg p-3 z-50"
+                    ref={projectDropdownRef}
+                  >
+                    {link.projectSubLinks.map((sublink) => (
+                      <div
+                        key={sublink.id}
+                        className="px-2 py-2 text-sm text-white hover:bg-teal/30 rounded-lg cursor-pointer"
+                      >
+                        <h1 className="font-bold">{sublink.title}</h1>
+                        <p className="text-whiteText text-[12px] font-thin">{sublink.descr}</p>
                       </div>
                     ))}
                   </div>
@@ -181,6 +272,62 @@ const NavBar: React.FC = () => {
               </div>
             ))}
           </div>
+        </div>
+
+        <div className="flex flex-row gap-5 md:gap-5 justify-center items-center">
+          <input
+            type="text"
+            className="md:w-[300px] md:flex hidden md:h-8 p-3 outline-none bg-transparent border-2 border-[#E9ECEF] text-white text-[15px] rounded-lg focus:ring-2 ring-sunshineYellow"
+            placeholder="Search here..."
+            onChange={(e)=>setSearchQuery(e.target.value)}
+          />
+         <div className="flex justify-center items-cente cursor-pointer hover:bg-whiteText/40 p-2 rounded-full relative"
+         onClick={toggleCart}
+         >
+          <div className="absolute text-white -top-0 bg-terracotta p-1 rounded-full w-4 h-4 flex translate-x-[3px] items-center justify-center text-[12px]">
+            {cartItems.length}
+          </div>
+          <ShoppingCartIcon size={25} className="fill-white stroke-white z-10"/>
+         </div>
+          <button onClick={toggleMobile} className="md:hidden text-white">
+            {isMobileOpen ? <X /> : <Menu />}
+          </button>
+        </div>
+
+        {isCartOpen && (
+          <Cart onClose={handleClose} onDelete={removeCart} cartItems={cartItems} resetCart={deleteCart} />
+        )}
+
+
+        {/* Mobile Phone */}
+        {isMobileOpen && (
+          <motion.div 
+            initial={{ x: "100%" }}
+            animate={{ x: 0 }}
+            exit={{ x: "100%" }}
+            transition={{ type: "tween", duration: 0.4, ease: "easeInOut" }}
+            ref={mobileRef} 
+            className="block md:hidden fixed inset-0 right-0 top-12 bg-white h-screen w-full p-3 rounded-b-md text-white z-30">
+            {navLinks.map((link) => (
+              <div
+                key={link.id}
+                className="flex relative p-2"
+              >
+                <div className="flex w-full justify-between items-center">
+                <p className={`flex flex-row gap-2 justify-center items-center text-xl text-charcoal font-semibold mt-3 ${
+                  activeLink === link.id ? "text-terracotta" : "text-charcoal"
+                }`}>
+                  <span>{link.icon}</span>{link.name}
+                </p>
+                </div>
+              </div>
+            ))}
+
+          <div className="pt-20">
+            <div className="h-[1px] bg-[#9b9b9b]"/>
+            <Footer />
+          </div>
+          </motion.div>
         )}
       </div>
     </div>
