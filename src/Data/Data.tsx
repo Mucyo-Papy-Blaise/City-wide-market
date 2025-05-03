@@ -9,6 +9,8 @@ import image5 from '../assets/construction1.jpg'
 import image6 from '../assets/construction2.jpg'
 import image7 from '../assets/Finished House.jpg'
 import image8 from '../assets/arch house.jpg'
+import { HardHat,PencilRuler,Hammer } from 'lucide-react'
+import { JSX } from 'react'
 
 
 interface CardDetailsProps{
@@ -186,3 +188,34 @@ export const DesignCards: CardDetailsProps[] = [
         keyFeatures: ["3 Bedrooms", "Open Floor Plan","Home Office Space","2.5 Bathrooms","2-Car Garage","Floor-to-Ceiling Windows","Gourmet Kitchen with Island","Outdoor Living Area"]
     },
 ]
+
+interface serviceProps {
+  title: string;
+  subTitle: string;
+  icon: JSX.Element;
+  description: string;
+}
+
+export const ServiceDetails: serviceProps[] = [
+    {
+      title: "Construction Service",
+      subTitle: "Implementation of Projects",
+      icon: <HardHat className="w-4 h-4 md:w-8 md:h-8 text-charcoal" />,
+      description:
+        "We offer professional construction services tailored to meet the specific needs of residential, commercial, and industrial projects. From the initial ground-breaking to the final finishing touches, our skilled team ensures quality craftsmanship, timely delivery, and adherence to safety standards. Whether it’s new construction, renovations, or expansions, we bring your vision to life with precision and reliability.",
+    },
+    {
+      title: "Architecture Service",
+      subTitle: "Design and Planning",
+      icon: <PencilRuler className="w-4 h-4 md:w-8 md:h-8 text-charcoal" />,
+      description:
+        "Our architecture services blend creativity, functionality, and innovation to design spaces that inspire and endure. We work closely with clients to develop customized plans that reflect their lifestyle, business goals, or community needs. From concept development to detailed blueprints and 3D modeling, we provide solutions that are both aesthetically pleasing and structurally sound.",
+    },
+    {
+      title: "Building Materials",
+      subTitle: "Supply of Quality Materials",
+      icon: <Hammer className="w-4 h-4 md:w-8 md:h-8 text-charcoal" />,
+      description:
+        "We supply high-quality building materials that support long-lasting and energy-efficient construction. Our range includes cement, bricks, roofing, steel, insulation, and interior finishes—all carefully sourced to meet industry standards. Whether you're a contractor, builder, or DIY enthusiast, our materials ensure your project is built on a strong and sustainable foundation.",
+    },
+  ];

@@ -3,12 +3,13 @@ import { useState, useRef,useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import consimage1 from "../assets/construction1.jpg";
 import consimage2 from '../assets/construction2.jpg'
-import { CardDetails, Choose } from "../Data/Data.ts";
-import {HardHat,PencilRuler,Hammer,ArrowRightCircle,X,ArrowRightCircleIcon,ArrowLeftCircleIcon,} from "lucide-react";
+import { CardDetails, Choose,ServiceDetails } from "../Data/Data.tsx";
+import {ArrowRightCircle,X,ArrowRightCircleIcon,ArrowLeftCircleIcon,} from "lucide-react";
 import { motion } from "framer-motion";
 import engineer from "../assets/workers.png";
 import { SearchContext } from "../Context/SearchContext.tsx";
 import highlightText from '../Data/highlightedText.tsx'
+import FilteredItem from "./FilteredItem.tsx";
 
 interface serviceProps {
   title: string;
@@ -26,38 +27,6 @@ const Home = () => {
   const [current, setCurrent] = useState(0)
   const {searchQuery} = useContext(SearchContext)
 
-  const ServiceDetails: serviceProps[] = [
-    {
-      title: "Construction Service",
-      subTitle: "Implementation of Projects",
-      icon: <HardHat className="w-4 h-4 md:w-8 md:h-8 text-charcoal" />,
-      description:
-        "We offer professional construction services tailored to meet the specific needs of residential, commercial, and industrial projects. From the initial ground-breaking to the final finishing touches, our skilled team ensures quality craftsmanship, timely delivery, and adherence to safety standards. Whether it’s new construction, renovations, or expansions, we bring your vision to life with precision and reliability.",
-    },
-    {
-      title: "Architecture Service",
-      subTitle: "Design and Planning",
-      icon: <PencilRuler className="w-4 h-4 md:w-8 md:h-8 text-charcoal" />,
-      description:
-        "Our architecture services blend creativity, functionality, and innovation to design spaces that inspire and endure. We work closely with clients to develop customized plans that reflect their lifestyle, business goals, or community needs. From concept development to detailed blueprints and 3D modeling, we provide solutions that are both aesthetically pleasing and structurally sound.",
-    },
-    {
-      title: "Building Materials",
-      subTitle: "Supply of Quality Materials",
-      icon: <Hammer className="w-4 h-4 md:w-8 md:h-8 text-charcoal" />,
-      description:
-        "We supply high-quality building materials that support long-lasting and energy-efficient construction. Our range includes cement, bricks, roofing, steel, insulation, and interior finishes—all carefully sourced to meet industry standards. Whether you're a contractor, builder, or DIY enthusiast, our materials ensure your project is built on a strong and sustainable foundation.",
-    },
-  ];
-
-  const filteredService = ServiceDetails.filter((service)=>
-    service.title.toLowerCase().includes(searchQuery.trim().toLowerCase()) ||
-    service.subTitle.toLowerCase().includes(searchQuery.trim().toLowerCase())
-  )
-
-  const filteredCards =  CardDetails.filter((card) =>
-    card.name.toLowerCase().includes(searchQuery.toLowerCase())
-  )
 
   const images = [consimage1,consimage2]
 
@@ -105,56 +74,7 @@ const Home = () => {
 
   return (
     <div className="w-full min-h-scree font-poppins">
-        {searchQuery && (filteredService.length > 0 || filteredCards.length > 0) && (
-           <div className="absolute bg-slate-200 border-teal p-3 rounded mb-5 w-full px-4 md:px-8 lg:px-32 mx-auto z-50 overflow-y-auto shadow-xl">
-              <h2 className="text-charcoal font-bold mb-2 text-[16px]">Quick Results:</h2>
-              {filteredService.length > 0 && (
-                <div className="flex flex-col gap-2 text-sm">
-                  <h3 className="text-terracotta font-semibold text-lg mb-2">Service</h3>
-                  {filteredService.map((service, id) => (
-                   <div
-                   key={id}
-                   className="flex flex-col gap-2"
-                   >
-                    <h1 className="text-black bg-slate-300 w-fit p-2 rounded-2xl font-semibold cursor-pointer hover:bg-slate-400"
-                    onClick={()=> {
-                      selectedService
-                      const el = document.getElementById(service.title.replace(/\s+/g, '-').toLowerCase());
-                      if(el){
-                        el.scrollIntoView({ behavior: 'smooth' });
-                      }
-                     }}
-                    >{highlightText(service.title, searchQuery)}</h1>
-                    <p className="text-lightGray text-sm">{highlightText(service.subTitle,searchQuery)}</p>
-                   </div>
-                  ))}
-                </div>
-              )}
-
-              {filteredCards.length > 0 && (
-                <div className="mt-3">
-                <h3 className="text-terracotta font-semibold text-lg mb-2">Projects</h3>
-                <div className="list-disc list-inside text-sm text-lightGray">
-                  {filteredCards.map((card, id) => (
-                    <div
-                    key={id}
-                    className="flex flex-col gap-2"
-                    >
-                     <h1 className="text-black bg-slate-300 w-fit p-2 rounded-2xl font-semibold cursor-pointer hover:bg-slate-400">{highlightText(card.name, searchQuery)}</h1>
-                     <p></p>
-                    </div>
-                  ))}
-                </div>
-              </div>
-              )}
-            </div>
-        )}
-
-        {filteredService.length === 0 && filteredCards.length ===0 && (
-          <div className="absolute bg-slate-200 border-teal p-3 rounded mb-5 w-full px-4 md:px-8 lg:px-32 mx-auto z-50 shadow-xl">
-            <p className="text-center">No Result Found For: <span className="bg-teal text-white font-bold p-1 rounded">{searchQuery}</span></p>
-          </div>
-        )}
+        <FilteredItem />
       {/* Image Part */}
       <div className="w-full md:h-96 h-60 relative overflow-hidden">
       <div className="h-96 w-full bg-gradient-to-r from-charcoal/70 to-transparent absolute z-10" />
@@ -210,8 +130,8 @@ const Home = () => {
             {CardDetails.map((card, index) => (
               <div
                 key={index}
-                id= {card.name.replace(/\s+/g, '-').toLowerCase()}
                 className="bg-black w-[350px] h-64 relative transform ease-in-out duration-300 hover:-translate-y-2 cursor-pointer"
+                onClick={()=> navigate('/Designs')}
               >
                 <img
                   src={card.photo}

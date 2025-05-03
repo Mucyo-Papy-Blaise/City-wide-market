@@ -5,7 +5,6 @@ import NavBar from './Components/NavBar';
 import Footer from './Components/Footer';
 import ArchitecturePage from './Pages/ArchitecturePage';
 import ViewMore from './Components/ViewMore';
-import {SearchProvider } from './Context/SearchContext';
 import { CartItem } from './Data/Types';
 
 const App:React.FC = () => {
@@ -56,7 +55,6 @@ const App:React.FC = () => {
   },[cartItems])
   
   return (
-      <SearchProvider>
         <Router>
         <NavBar cartItems ={cartItems} removeCart={removeFromCart} deleteCart={deleteCart}/>
         <Routes>
@@ -66,7 +64,6 @@ const App:React.FC = () => {
         </Routes >
         <Footer />
         </Router>
-      </SearchProvider>
   )
 }
 

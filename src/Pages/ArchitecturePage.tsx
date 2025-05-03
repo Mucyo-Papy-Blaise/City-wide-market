@@ -4,6 +4,7 @@ import { Search, X } from "lucide-react";
 import {motion}  from 'framer-motion'
 import { ChevronDown,ChevronUp,Filter,SquareCheckBigIcon,Square } from "lucide-react";
 import { DesignCards } from "../Data/Data";
+import FilteredItem from "../Components/FilteredItem";
 
 interface ArchProps {
   addToCart: (item: any) => void
@@ -130,7 +131,8 @@ useEffect(() => {
 
   // Apply Filters style on Card
   const applyFilters = () => {
-    let result = [...DesignCards]
+    let result = [...
+      DesignCards]
 
     // filter style
     if(clickedStyleIcon !== null){
@@ -172,11 +174,12 @@ useEffect(() => {
       style: null,
       bedRooms: null
     });
-  }
+  } 
 
   return (
-    <div className="bg-[#F8F9FA] relative container mx-auto px-4 md:px-8 lg:px-40 font-poppins">
-        <div className="mt-5 gap-5 flex flex-col">
+    <div className="bg-softCream w-full min-h-scree font-poppins">
+        <FilteredItem />
+        <div className="mt-5 gap-5 flex flex-col relative container mx-auto px-4 md:px-8 lg:px-40">
           <h1 className="text-charcoal font-bold text-[20px]">
             Architectural Designs
           </h1>
