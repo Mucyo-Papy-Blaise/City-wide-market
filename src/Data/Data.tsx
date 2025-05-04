@@ -9,7 +9,7 @@ import image5 from '../assets/construction1.jpg'
 import image6 from '../assets/construction2.jpg'
 import image7 from '../assets/Finished House.jpg'
 import image8 from '../assets/arch house.jpg'
-import { HardHat,PencilRuler,Hammer } from 'lucide-react'
+import { HardHat,PencilRuler,Hammer, Home, CalendarDays, ShoppingBag, Square, LucidePhone,MapPin,MailIcon } from 'lucide-react'
 import { JSX } from 'react'
 
 
@@ -219,3 +219,134 @@ export const ServiceDetails: serviceProps[] = [
         "We supply high-quality building materials that support long-lasting and energy-efficient construction. Our range includes cement, bricks, roofing, steel, insulation, and interior finishes—all carefully sourced to meet industry standards. Whether you're a contractor, builder, or DIY enthusiast, our materials ensure your project is built on a strong and sustainable foundation.",
     },
   ];
+
+  export const navLinks = [
+    { id: 1, name: "Home", icon: <Home size={14}/> },
+    { id: 2, name: "Design", icon: <PencilRuler size={14}/>,
+      designSubLinks: [
+        {id: 1, title: "Modern design", descr: "Clean lines and minimalist aestethics"},
+        {id: 2, title: "Traditional", descr: "Official buildings and retail spaces"},
+        {id: 3, title: "Sustainable Design", descr: "Schools, Hospital and Public buildings"},
+      ],
+    },
+    {id: 3, name: "Projects", icon: <CalendarDays size={14}/>,
+      projectSubLinks: [
+        {id: 1, title: "Residential", descr: "Customs homes and Residential buildings"},
+        {id: 2, title: "Commercial", descr: "Official buildings and retail spaces"},
+        {id: 3, title: "Institutional", descr: "Schools, Hospital and Public buildings"},
+      ],
+    },
+    {
+      id: 4,
+      name: "Store",
+      icon: <ShoppingBag size={14}/>,
+      storeSubLinks: [
+        {id: 1, title: "Building Materials", descr: "Cement, bricks and structure components"},
+        {id: 2, title: "Finishes", descr: "Paints, Flooring and Decorative elements"},
+        {id: 3, title: "Sustainable Materials", descr: "Eco-friendly and recycled building products"},
+      ],
+    },
+  ];
+
+  export const styleDetails = [
+    {
+      styleId:1,
+      name: "Modern",
+      icon: <Square />
+    },
+    {
+      styleId:2,
+      name: "Traditional",
+      icon: <Square />
+    },
+    {
+      styleId:3,
+      name: "Rustic",
+      icon: <Square />
+    },
+    {
+      styleId:4,
+      name: "Contemporary",
+      icon: <Square />
+    },
+    {
+      styleId:5,
+      name: "Mediterranean",
+      icon: <Square />
+    },
+  ]
+
+  export const bedRoomDetails =[
+      {
+        bedId:1,
+        number: "1",
+        icon: <Square />
+      },
+      {
+        bedId:2,
+        number: "2",
+        icon: <Square />
+      },
+      {
+        bedId:3,
+        number: "3",
+        icon: <Square />
+      },
+      {
+        bedId:4,
+        number: "4",
+        icon: <Square />
+      },
+      {
+        bedId:5,
+        number: "5+",
+        icon: <Square />
+      },
+    ]
+
+    export const contactDetails = [
+      {
+        id:1,
+        icon: <LucidePhone size={16}/>,
+        title: "Call Us",
+        desc: "Our team is available Monday-Friday, 9am-5pm",
+        contact: "+250786663069"
+      },
+      {
+        id:2,
+        icon:<MailIcon size={16}/>,
+        title: "Email Us",
+        desc: "We'll respond to your inquiry within 24 hours",
+        contact: "ZincJesus@gmail.com"
+      },
+      {
+        id:3,
+        icon: <MapPin size={16}/>,
+        title: "Visit Us",
+        desc: "Come see our showroom and office",
+        contact: "123 Architecture Street, Building City, AC 12345"
+      },
+    ]
+
+    export const frequentQuestions =[
+      {
+        id: 1,
+        question:"How do I purchase an architectural design?",
+        answer: "You can browse our collection of designs and purchase directly through our website. Each design includes complete architectural plans, 3D renderings, and material specifications."
+      },
+      {
+        id: 2,
+        question:"Can designs be customized?",
+        answer: "Yes, we offer customization services for all our designs. Contact us with your specific requirements, and our architects will work with you to modify the design to your needs."
+      },
+      {
+        id: 3,
+        question:"Do you ship building materials internationally?",
+        answer: "We currently ship building materials within the continental United States. For international shipping inquiries, please contact our customer service team for a custom quote."
+      },
+      {
+        id: 4,
+        question:"What is your return policy for materials?",
+        answer: "Unused and undamaged materials can be returned within 30 days of purchase. Custom-ordered materials are non-refundable. Please review our full return policy for more details."
+      },
+    ]

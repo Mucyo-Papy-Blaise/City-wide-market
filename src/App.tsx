@@ -6,6 +6,7 @@ import Footer from './Components/Footer';
 import ArchitecturePage from './Pages/ArchitecturePage';
 import ViewMore from './Components/ViewMore';
 import { CartItem } from './Data/Types';
+import ContactPage from './Pages/ContactPage';
 
 const App:React.FC = () => {
 
@@ -61,6 +62,7 @@ const App:React.FC = () => {
           <Route path='/' element = {<Home />} />
           <Route path='/Designs' element ={<ArchitecturePage addToCart={addToCart}/>} />
           <Route path='/ViewMore/:id' element ={<ViewMore addToCart={addToCart} />} /> 
+          <Route path='/Contact' element={<ContactPage />}/>
         </Routes >
         <Footer />
         </Router>

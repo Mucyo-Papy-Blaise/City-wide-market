@@ -1,11 +1,12 @@
 import { useState, useRef, useEffect,useContext} from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/City-wide.png";
-import { Menu, X, ChevronDown, ChevronUp,Search, Home, PencilRuler, CalendarDays, ShoppingBag, ShoppingCartIcon} from "lucide-react";
+import { Menu, X, ChevronDown, ChevronUp,Search,ShoppingCartIcon} from "lucide-react";
 import Cart from "./Cart";
 import {motion} from 'framer-motion'
 import Footer from "./Footer";
 import { SearchContext } from "../Context/SearchContext";
+import { navLinks } from "../Data/Data";
 
 interface NavProps{
   cartItems: any[];
@@ -30,7 +31,7 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
   const projectDropdownRef = useRef<HTMLDivElement>(null);
   const mobileRef = useRef<HTMLDivElement>(null)
   const {setSearchQuery} = useContext(SearchContext)
- 
+  const searchRef = useRef<HTMLDivElement>(null)
   const toggleMobile = () => {
     setIsMobileOpen(!isMobileOpen);
   };
@@ -103,34 +104,6 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
     }
   }, [isMobileOpen, isCartOpen]);
 
-  const navLinks = [
-    { id: 1, name: "Home", icon: <Home size={14}/> },
-    { id: 2, name: "Design", icon: <PencilRuler size={14}/>,
-      designSubLinks: [
-        {id: 1, title: "Modern design", descr: "Clean lines and minimalist aestethics"},
-        {id: 2, title: "Traditional", descr: "Official buildings and retail spaces"},
-        {id: 3, title: "Sustainable Design", descr: "Schools, Hospital and Public buildings"},
-      ],
-    },
-    {id: 3, name: "Projects", icon: <CalendarDays size={14}/>,
-      projectSubLinks: [
-        {id: 1, title: "Residential", descr: "Customs homes and Residential buildings"},
-        {id: 2, title: "Commercial", descr: "Official buildings and retail spaces"},
-        {id: 3, title: "Institutional", descr: "Schools, Hospital and Public buildings"},
-      ],
-    },
-    {
-      id: 4,
-      name: "Store",
-      icon: <ShoppingBag size={14}/>,
-      storeSubLinks: [
-        {id: 1, title: "Building Materials", descr: "Cement, bricks and structure components"},
-        {id: 2, title: "Finishes", descr: "Paints, Flooring and Decorative elements"},
-        {id: 3, title: "Sustainable Materials", descr: "Eco-friendly and recycled building products"},
-      ],
-    },
-  ];
-
   const getRefForLink = (link: any) => {
     if (link.storeSubLinks) return storeTriggerRef;
     if (link.designSubLinks) return designTriggerRef;
@@ -142,6 +115,19 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
     setIsCartOpen(false)
   }
   
+  useEffect(()=>{
+    const handleClickOutside =(e: MouseEvent) =>{
+      if(searchRef.current && !searchRef.current.contains(e.target as Node)){
+        setSearchQuery('')
+      }
+    } 
+
+    document.addEventListener('mousedown',handleClickOutside)
+
+    return ()=> {
+      document.removeEventListener('mousedown', handleClickOutside)
+    }
+  },[setSearchQuery])
   return (
     <div className="w-full md:p-4 p-2 bg-charcoal relative">
       <div className="flex flex-row items-center justify-between px-4 md:px-8 lg:px-32 mx-auto font-poppins">
@@ -203,7 +189,9 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
                 ref={getRefForLink(link)}
               >
                 <p className="flex flex-row gap-1 justify-center items-center text-sm">
-                  <span>{link.icon}</span>{link.name}
+                  {link.id === 1 ?
+                    <p onClick={()=> navigate('/')} className="flex flex-row items-center gap-2"><span>{link.icon}</span>{link.name}</p>:
+                    <p className="flex flex-row items-center gap-2"><span>{link.icon}</span>{link.name}</p>}
                 </p>
                 {(link.designSubLinks || link.projectSubLinks || link.storeSubLinks) && (
                   <span className="flex items-center w-4 h-4">
