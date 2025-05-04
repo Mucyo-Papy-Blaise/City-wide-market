@@ -61,7 +61,7 @@ const ViewMore =({addToCart}: viewProps) => {
                 <h1>Back to Designs</h1>
             </div>
 
-            <h1 className='text-charcoal text-[20px] font-bold'>Modern Minimalist Villa</h1>
+            <h1 className='text-charcoal text-[20px] font-bold'>{design.title}</h1>
 
             <div className='flex flex-row gap-5'>
                 <p className='bg-[#e0e0e0] p-2 rounded-3xl text-center text-[12px]'>{design.type}</p>
@@ -176,7 +176,11 @@ const ViewMore =({addToCart}: viewProps) => {
             <h1 className='text-charcoal font-bold text-[20px] mt-5'>Need help?</h1>
             <p className='text-lightGray text-[15px]'>Our architectural consultants are available to answer any questions about this design.</p>
 
-            <button className='bg-softCream border-2 border-[#747474] p-2 mt-5 rounded font-semibold hover:bg-[#bfffd0]'>Contact Us</button>
+            <button 
+            className='bg-softCream border-2 border-[#747474] p-2 mt-5 rounded font-semibold hover:bg-[#bfffd0]'
+            onClick={()=> navigate('/Contact')}
+            >Contact Us
+            </button>
     </div>
     </div>
     </div>

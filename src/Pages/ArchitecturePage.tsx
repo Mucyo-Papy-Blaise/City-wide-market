@@ -1,10 +1,10 @@
 import { useState,useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate,useLocation } from "react-router-dom";
 import { Search, X } from "lucide-react";
 import {motion}  from 'framer-motion'
 import { ChevronDown,ChevronUp,Filter,SquareCheckBigIcon,Square } from "lucide-react";
-import { DesignCards } from "../Data/Data";
-import FilteredItem from "../Components/SearchedItem";
+import { DesignCards,styleDetails,bedRoomDetails } from "../Data/Data";
+import SearchedItem from "../Components/SearchedItem";
 
 interface ArchProps {
   addToCart: (item: any) => void
@@ -13,6 +13,7 @@ interface ArchProps {
 
 const ArchitecturePage=({addToCart}: ArchProps) => {
   const navigate = useNavigate()
+  const location = useLocation()
   const [isSortOpen, setIsSortOpen] = useState<boolean>(false)
   const [selectedSort, setSelectedSort] = useState<number | null>(null)
   const dropDownRef = useRef<HTMLDivElement>(null)
@@ -22,6 +23,18 @@ const ArchitecturePage=({addToCart}: ArchProps) => {
   const [clickedBedIcon, setClickedBedIcon] = useState<number | null>(null)
   const [filterCard, setFilteredCards] = useState(DesignCards)
   const [activeFilters, setActiveFilters] = useState({style: null as number | null , bedRooms: null as number | null})
+  const queryParams = new URLSearchParams(location.search)
+  const searchId = queryParams.get('search')
+
+
+  useEffect(()=>{
+    if(searchId){
+      const filtered = DesignCards.filter((card)=> card.id.toString() ===  searchId)
+      setFilteredCards(filtered)
+    }else{
+      setFilteredCards(DesignCards)
+    }
+  },[filterCard, searchId])
 
   const getCardImage = (card: { images: string | string[]; }) => {
     if (!Array.isArray(card.images) || card.images.length === 0) return "";
@@ -35,64 +48,6 @@ const ArchitecturePage=({addToCart}: ArchProps) => {
   }
 
   const Sorts = ["Newest First", "Price: Low to High", "Price: High to Low", "Most Popular"]
-  
-  // Array Object of Style
-  const styleDetails = [
-    {
-      styleId:1,
-      name: "Modern",
-      icon: <Square />
-    },
-    {
-      styleId:2,
-      name: "Traditional",
-      icon: <Square />
-    },
-    {
-      styleId:3,
-      name: "Rustic",
-      icon: <Square />
-    },
-    {
-      styleId:4,
-      name: "Contemporary",
-      icon: <Square />
-    },
-    {
-      styleId:5,
-      name: "Mediterranean",
-      icon: <Square />
-    },
-  ]
-
-  // Array Object of Bed Room
-  const bedRoomDetails =[
-    {
-      bedId:1,
-      number: "1",
-      icon: <Square />
-    },
-    {
-      bedId:2,
-      number: "2",
-      icon: <Square />
-    },
-    {
-      bedId:3,
-      number: "3",
-      icon: <Square />
-    },
-    {
-      bedId:4,
-      number: "4",
-      icon: <Square />
-    },
-    {
-      bedId:5,
-      number: "5+",
-      icon: <Square />
-    },
-  ]
 
   // Drop Down Closed When User Click Outside
   useEffect(() => {
@@ -174,11 +129,13 @@ useEffect(() => {
       style: null,
       bedRooms: null
     });
+    navigate("/Designs");
   } 
+
 
   return (
     <div className="bg-softCream w-full min-h-scree font-poppins">
-        <FilteredItem />
+        <SearchedItem />
         <div className="mt-5 gap-5 flex flex-col relative container mx-auto px-4 md:px-8 lg:px-40">
           <h1 className="text-charcoal font-bold text-[20px]">
             Architectural Designs
@@ -358,6 +315,7 @@ useEffect(() => {
               filterCard.map((item)=>
                 <div
                  key={item.id}
+                 id={`card-${item.id}`}
                  className="bg-softCream w-[360px] md:w-[390px] pb-2 h-[430px] border-2 border-[#939393] hover:border-terracotta rounded-[10px] overflow-hidden shadow-xl transition-all duration-300 cursor-pointer"
                  >
                  <div className="w-full h-52 overflow-hidden">

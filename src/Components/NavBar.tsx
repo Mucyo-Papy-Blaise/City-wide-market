@@ -134,7 +134,7 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
         <div className="flex flex-row gap-16">
           <div className="flex items-center gap-2">
             <img
-              onClick={() => navigate('/Home')}
+              onClick={() => navigate('/')}
               src={logo}
               alt="Logo Image"
               className="md:w-32 md:h-8 w-16 h-4 cursor-pointer"
@@ -189,7 +189,9 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
                 ref={getRefForLink(link)}
               >
                 <p className="flex flex-row gap-1 justify-center items-center text-sm">
-                  <span>{link.icon}</span>{link.name}
+                  {link.id === 1 ?
+                    <p onClick={()=> navigate('/')} className="flex flex-row items-center gap-2"><span>{link.icon}</span>{link.name}</p>:
+                    <p className="flex flex-row items-center gap-2"><span>{link.icon}</span>{link.name}</p>}
                 </p>
                 {(link.designSubLinks || link.projectSubLinks || link.storeSubLinks) && (
                   <span className="flex items-center w-4 h-4">

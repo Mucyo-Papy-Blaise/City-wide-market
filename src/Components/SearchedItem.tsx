@@ -3,12 +3,17 @@ import { SearchContext } from "../Context/SearchContext.tsx";
 import highlightText from '../Data/highlightedText.tsx'
 import { useNavigate } from "react-router-dom";
 
-const FilteredItem = () => {
+const SearchedItem = () => {
     const navigate = useNavigate()
     const {searchQuery, setSearchQuery} = useContext(SearchContext)
     const {allData} =  useContext(SearchContext)
     const searchRef = useRef<HTMLDivElement>(null)
     
+
+    const handleClick=(item: any)=>{
+      navigate(`/Designs?search=${item.id}`);
+      setSearchQuery('')
+    }
     const filteredService = allData.services.filter((service)=>
         service.title.toLowerCase().includes(searchQuery.trim().toLowerCase()) ||
         service.subTitle.toLowerCase().includes(searchQuery.trim().toLowerCase())
@@ -50,19 +55,7 @@ const FilteredItem = () => {
                    <div
                    key={id}
                    className="flex flex-col gap-2 rounded cursor-pointer"
-                   onClick={()=>{
-                    const itemId = service.title.replace(/\s+/g, '-').toLowerCase();
-
-                    if(window.location.pathname === '/Home'){
-                      const el = document.getElementById(itemId)
-                      if(el){
-                        el.scrollIntoView({ behavior: 'smooth' });
-                      } else{
-                        navigate(`/Home#${itemId}`);
-                      }
-                    }
-                    setSearchQuery('')
-                   }}
+                   onClick={() => handleClick(service)}
                    >
                     <h1 className="text-black bg-slate-300 w-fit p-2 rounded-2xl font-semibold cursor-pointer"
                     >{highlightText(service.title, searchQuery)}</h1>
@@ -80,19 +73,7 @@ const FilteredItem = () => {
                     <div
                     key={id}
                     className="flex flex-col gap-2 p-2 rounded cursor-pointer"
-                    onClick={()=>{
-                      const itemId = card.name.replace(/\s+/g, '-').toLowerCase();
-
-                    if(window.location.pathname === '/Home'){
-                      const el = document.getElementById(itemId)
-                      if(el){
-                        el.scrollIntoView({ behavior: 'smooth' });
-                      } else{
-                        navigate(`/Home#${itemId}`);
-                      }
-                    }
-                    setSearchQuery('')
-                    }}
+                    onClick={()=> handleClick(card)}
                     >
                      <h1 className="text-black bg-slate-300 w-fit p-2 rounded-2xl font-semibold cursor-pointer">{highlightText(card.name, searchQuery)}</h1>
                      <div className="bg-[#bcbcbc] h-[1px] w-full mb-3" />
@@ -108,19 +89,7 @@ const FilteredItem = () => {
                     <div
                      key={id}
                      className="flex flex-col gap-2 hover:bg-slate-400 p-2 rounded cursor-pointer"
-                     onClick={()=>{
-                      const itemId = card.title.replace(/\s+/g, '-').toLowerCase();
-
-                    if(window.location.pathname === '/Designs'){
-                      const el = document.getElementById(itemId)
-                      if(el){
-                        el.scrollIntoView({ behavior: 'smooth' });
-                      } else{
-                        navigate(`/Designs#${itemId}`);
-                      }
-                    }
-                    setSearchQuery('')
-                     }}
+                     onClick={()=> handleClick(card)}
                     >
                       <div className="flex flex-col">
                         <div className="flex flex-row items-center">
@@ -139,7 +108,7 @@ const FilteredItem = () => {
         )}
 
         {filteredService.length === 0 && filteredCards.length ===0 && filteredHomeCards.length === 0 && (
-          <div className="absolute bg-slate-200 border-teal top[70px] p-3 rounded mb-5 w-full px-4 md:px-8 lg:px-32 mx-auto z-50 shadow-xl">
+          <div className="absolute bg-slate-200 border-teal top-[70px] p-3 rounded mb-5 w-full px-4 md:px-8 lg:px-32 mx-auto z-50 shadow-xl">
             <p className="text-center">No Result Found For: <span className="bg-teal text-white font-bold p-1 rounded">{searchQuery}</span></p>
           </div>
         )}
@@ -147,4 +116,4 @@ const FilteredItem = () => {
   )
 }
 
-export default FilteredItem
+export default SearchedItem

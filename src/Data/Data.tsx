@@ -9,7 +9,7 @@ import image5 from '../assets/construction1.jpg'
 import image6 from '../assets/construction2.jpg'
 import image7 from '../assets/Finished House.jpg'
 import image8 from '../assets/arch house.jpg'
-import { HardHat,PencilRuler,Hammer, Home, CalendarDays, ShoppingBag } from 'lucide-react'
+import { HardHat,PencilRuler,Hammer, Home, CalendarDays, ShoppingBag, Square, LucidePhone,MapPin,MailIcon } from 'lucide-react'
 import { JSX } from 'react'
 
 
@@ -247,3 +247,106 @@ export const ServiceDetails: serviceProps[] = [
       ],
     },
   ];
+
+  export const styleDetails = [
+    {
+      styleId:1,
+      name: "Modern",
+      icon: <Square />
+    },
+    {
+      styleId:2,
+      name: "Traditional",
+      icon: <Square />
+    },
+    {
+      styleId:3,
+      name: "Rustic",
+      icon: <Square />
+    },
+    {
+      styleId:4,
+      name: "Contemporary",
+      icon: <Square />
+    },
+    {
+      styleId:5,
+      name: "Mediterranean",
+      icon: <Square />
+    },
+  ]
+
+  export const bedRoomDetails =[
+      {
+        bedId:1,
+        number: "1",
+        icon: <Square />
+      },
+      {
+        bedId:2,
+        number: "2",
+        icon: <Square />
+      },
+      {
+        bedId:3,
+        number: "3",
+        icon: <Square />
+      },
+      {
+        bedId:4,
+        number: "4",
+        icon: <Square />
+      },
+      {
+        bedId:5,
+        number: "5+",
+        icon: <Square />
+      },
+    ]
+
+    export const contactDetails = [
+      {
+        id:1,
+        icon: <LucidePhone size={16}/>,
+        title: "Call Us",
+        desc: "Our team is available Monday-Friday, 9am-5pm",
+        contact: "+250786663069"
+      },
+      {
+        id:2,
+        icon:<MailIcon size={16}/>,
+        title: "Email Us",
+        desc: "We'll respond to your inquiry within 24 hours",
+        contact: "ZincJesus@gmail.com"
+      },
+      {
+        id:3,
+        icon: <MapPin size={16}/>,
+        title: "Visit Us",
+        desc: "Come see our showroom and office",
+        contact: "123 Architecture Street, Building City, AC 12345"
+      },
+    ]
+
+    export const frequentQuestions =[
+      {
+        id: 1,
+        question:"How do I purchase an architectural design?",
+        answer: "You can browse our collection of designs and purchase directly through our website. Each design includes complete architectural plans, 3D renderings, and material specifications."
+      },
+      {
+        id: 2,
+        question:"Can designs be customized?",
+        answer: "Yes, we offer customization services for all our designs. Contact us with your specific requirements, and our architects will work with you to modify the design to your needs."
+      },
+      {
+        id: 3,
+        question:"Do you ship building materials internationally?",
+        answer: "We currently ship building materials within the continental United States. For international shipping inquiries, please contact our customer service team for a custom quote."
+      },
+      {
+        id: 4,
+        question:"What is your return policy for materials?",
+        answer: "Unused and undamaged materials can be returned within 30 days of purchase. Custom-ordered materials are non-refundable. Please review our full return policy for more details."
+      },
+    ]

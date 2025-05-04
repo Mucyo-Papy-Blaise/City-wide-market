@@ -9,7 +9,7 @@ import { motion } from "framer-motion";
 import engineer from "../assets/workers.png";
 import { SearchContext } from "../Context/SearchContext.tsx";
 import highlightText from '../Data/highlightedText.tsx'
-import FilteredItem from "./SearchedItem.tsx";
+import SearchedItem from "./SearchedItem.tsx";
 
 interface serviceProps {
   title: string;
@@ -80,9 +80,10 @@ const Home = () => {
       }
     }
   },[location])
+
   return (
     <div className="w-full min-h-scree font-poppins">
-        <FilteredItem />
+        <SearchedItem />
       {/* Image Part */}
       <div className="w-full md:h-96 h-60 relative overflow-hidden">
       <div className="h-96 w-full bg-gradient-to-r from-charcoal/70 to-transparent absolute z-10" />
@@ -280,7 +281,10 @@ const Home = () => {
             your dream home today
           </p>
 
-          <div className="flex flex-row gap-3 bg-teal p-2 w-48 justify-center items-center rounded hover:bg-[#4dbcaf]">
+          <div 
+          className="flex flex-row gap-3 bg-teal p-2 w-48 justify-center items-center rounded hover:bg-[#4dbcaf]"
+          onClick={()=> navigate('/Contact')}
+          >
             <button className="text-white text-[15px]">Contact Us</button>
             <ArrowRightCircle className="text-white text-[15px] " />
           </div>
