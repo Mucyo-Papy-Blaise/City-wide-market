@@ -98,7 +98,7 @@ const ContactPage = () => {
             src="https://www.google.com/maps/embed?pb=..."
             style={{
               width: '100%',
-              height: window.innerWidth < 640 ? '300px' : window.innerWidth < 768 ? '300px' : window.innerWidth < 1024 ? '450px' : '550px',
+              height: window.innerWidth < 640 ? '300px' : window.innerWidth < 768 ? '300px' : window.innerWidth < 1024 ? '500px' : '550px',
               border: 0,
               borderRadius: '12px',
             }}
