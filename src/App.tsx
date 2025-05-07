@@ -7,6 +7,7 @@ import ArchitecturePage from './Pages/ArchitecturePage';
 import ViewMore from './Components/ViewMore';
 import { CartItem } from './Data/Types';
 import ContactPage from './Pages/ContactPage';
+import Dashboard from './Admin/Dashboard';
 
 const App:React.FC = () => {
 
@@ -63,6 +64,7 @@ const App:React.FC = () => {
           <Route path='/Designs' element ={<ArchitecturePage addToCart={addToCart}/>} />
           <Route path='/ViewMore/:id' element ={<ViewMore addToCart={addToCart} />} /> 
           <Route path='/Contact' element={<ContactPage />}/>
+          <Route path = '/dashboard' element={<Dashboard />}/>
         </Routes >
         <Footer />
         </Router>
