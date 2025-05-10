@@ -111,7 +111,7 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
     return null;
   };
 
-  const handleClose = () =>{
+  const handleClose =()=>{
     setIsCartOpen(false)
   }
   
@@ -277,7 +277,7 @@ const NavBar = ({cartItems,removeCart, deleteCart}:NavProps) => {
           </div>
           <ShoppingCartIcon size={25} className="fill-white stroke-white z-10"/>
          </div>
-          <button onClick={toggleMobile} className="md:hidden text-white">
+          <button onClick={toggleMobile} className="md:hidden text-white">~
             {isMobileOpen ? <X /> : <Menu />}
           </button>
         </div>
