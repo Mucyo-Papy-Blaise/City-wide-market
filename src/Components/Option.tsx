@@ -64,7 +64,7 @@ const Option = ({onDashoboardClick, onManagementClick, onSettingsClick}: options
     setIsDashboardActive(false);
   };
   return (
-    <div className="bg-softCream min-h-screen font-poppins flex flex-col gap-5 h-screen w-64 border-r-2 border-whiteText/80 p-5">
+    <div className="bg-softCream min-h-screen font-poppins flex flex-col gap-5 h-screen w-64 border-r-2 border-whiteText/80 p-5 overflow-y-auto">
       <div className="flex flex-row gap-3 items-center">
         <User size={20} />
         <h1 className="font-bold text-sm text-charcoal">City-Wide-Admin</h1>

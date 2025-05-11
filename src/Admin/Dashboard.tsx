@@ -9,7 +9,7 @@ const Dashboard = () => {
 
   return (
     <div className="bg-softCream w-full min-h-screen font-poppins">
-      <div className="bg-softCream w-full h-screen p-5">
+      <div className="bg-softCream w-full h-screen p-10">
         <h1 className="font-bold text-xl mb-5">Dashboard</h1>
         <div className="flex flex-row items-center gap-4 cursor-pointer bg-[#D9D9D9]/70 p-2 w-fit rounded transition-all duration-300  ease-in-out">
           {MenuTabs.map((MenuTab, index)=>
