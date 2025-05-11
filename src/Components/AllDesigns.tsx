@@ -1,6 +1,5 @@
-import DesignPublished from '../Components/DesignDrafted'
+import DesignPublished from '../Components/DesignPublished'
 import DesignDrafted from '../Components/DesignDrafted'
-
 const AllDesigns = () => {
   return (
     <div>
