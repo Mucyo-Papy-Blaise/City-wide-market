@@ -1,13 +1,15 @@
 import {Plus} from 'lucide-react'
 import { useState } from 'react'
 import AllDesigns from '../Components/AllDesigns'
-import DesignPublished from '../Components/DesignPublished'
-import DesignDrafted from '../Components/DesignDrafted'
+import { DesignCards } from '../Data/Data'
 
 const DesignUpload = () => {
-  const [designTabClicked, setDesignTabClicked] = useState<number | null>(0)
-
-  const designTabs =["All Designs","Published","Draft"]
+ const [filter, setFilter] = useState('all')
+  const designTabs =[{title:"All Designs", filter:"all"},{title:"Published", filter:'published'},{title:"Draft",filter:"draft"}]
+  const filteredDesign = DesignCards.filter((card)=>{
+    if(filter === 'all') return card
+     return card.status.toLocaleLowerCase()===filter
+  })
   return (
     <div className="bg-softCream w-full p-10 min-h-screen">
       <div className="flex flex-row justify-between">
@@ -21,25 +23,19 @@ const DesignUpload = () => {
         <div 
         key={index}
         className={`${
-          designTabClicked === index ? "bg-white text-black w-16 text-center h-6 rounded text-[11px] flex items-center justify-center shadow-sm cursor-pointer" : "text-[11px] cursor-pointer text-lightGray"
+        designTab.filter.toLocaleLowerCase() === filter  ? "bg-white text-black w-16 text-center h-6 rounded text-[11px] flex items-center justify-center shadow-sm cursor-pointer" : "text-[11px] cursor-pointer text-lightGray"
         }`}
-        onClick={()=> setDesignTabClicked(index)}
+        onClick={()=> setFilter(designTab.filter)}
         >
-          {designTab}
+          {designTab.title}
         </div>
         )}
       </div>
-      {designTabClicked === 0 && (
-        <AllDesigns />
-      )}
+    
+        <AllDesigns DesignCards={filteredDesign} />
+    
 
-      {designTabClicked === 1 && (
-        <DesignPublished />
-      )}
-
-      {designTabClicked === 2 && (
-        <DesignDrafted />
-      )}
+      
     </div>
   )
 }
