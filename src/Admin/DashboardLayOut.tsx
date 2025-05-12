@@ -2,13 +2,15 @@ import { useState } from "react"
 import Option from "../Components/Option"
 import Dashboard from "./Dashboard"
 import DesignUpload from "./DesignUpload"
+import AddDesign from "./AddDesign"
 import MaterialUpload from "./MaterialUpload"
 import Orders from "./Orders"
 import Users from "./Users"
 import Settings from "./Settings"
 
-const FullDashboard = () => {
+const DashboardLayOut = () => {
     const [viewDashboard, setViewBoard] = useState<"dashboard" | "settings" | "management">("dashboard");
+    const [designSubPage, setDesignSubPage] =  useState<"list" | "add">("list")
     const [selectedManagementId, setSelectedManagementId] = useState<number | null>(null);
 
     const handleDashboardClick =()=>{
@@ -32,7 +34,9 @@ const FullDashboard = () => {
     if (viewDashboard === "management") {
       switch (selectedManagementId) {
         case 1:
-          return <DesignUpload />;
+          return designSubPage === 'list' ?
+          <DesignUpload addNewDesign={() => setDesignSubPage("add")} />
+          : <AddDesign onBack={() => setDesignSubPage("list")}/>;
         case 2:
           return <MaterialUpload />;
         case 3:
@@ -58,4 +62,4 @@ const FullDashboard = () => {
   )
 }
 
-export default FullDashboard
+export default DashboardLayOut

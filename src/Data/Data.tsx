@@ -96,15 +96,15 @@ export const DesignCards: CardDetailsProps[] = [
     {
       id: 2,
       images: [image4, image5, image6],
-      type: "Rustic",
-      title: "Rustic Countryside Home",
-      bedRoom: "1 Bed Rooms",
-      subDescr: "A sleek, minimalist design with open spaces and large windows.",
-      price: 10000,
+      type: "Rustic",  //
+      title: "Rustic Countryside Home", //
+      bedRoom: "1 Bed Rooms",  //
+      subDescr: "A sleek, minimalist design with open spaces and large windows.", //
+      price: 10000,  //
       package: ["Complete architectural plans", "3D renderings", "Material specifications", "Construction documents", "Digital files (PDF, CAD"],
       description: "This Modern Minimalist Villa is designed for those who appreciate clean lines, open spaces, and a seamless connection with the outdoors. The design features large windows that flood the interior with natural light and provide panoramic views of the surrounding landscape. The floor plan is thoughtfully arranged to maximize space efficiency while maintaining an open, airy feel. The main living area combines the kitchen, dining, and living spaces into one cohesive zone, perfect for both everyday living and entertaining guests.The exterior showcases a harmonious blend of concrete, glass, and wood elements, creating a striking yet balanced aesthetic. The flat roof design not only contributes to the modern look but also provides space for a rooftop terrace or garden.",
       keyFeatures: ["3 Bedrooms", "Open Floor Plan", "Home Office Space", "2.5 Bathrooms", "2-Car Garage", "Floor-to-Ceiling Windows", "Gourmet Kitchen with Island", "Outdoor Living Area"],
-      status: 'Draft'
+      status: 'Draft' //
     },
     {
       id: 3,

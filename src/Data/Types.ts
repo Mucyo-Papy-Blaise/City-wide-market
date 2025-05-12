@@ -13,3 +13,10 @@ export interface CartProps{
   onClose: () => void,
   resetCart:() => void,
 }
+
+export interface addNewDesignProps{
+  addNewDesign: () => void
+}
+export interface onBackProps {
+  onBack: () => void
+}
