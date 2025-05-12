@@ -3,7 +3,7 @@ import { footerLinks } from '../Data/Data'
 
 const Footer:React.FC = () => {
   return (
-    <div className='relative container mx-auto px-0 md:px-8 lg-px-40 font-poppins'>
+    <div className='relative font-poppins'>
         <div className="bg-softCream flex flex-col md:flex-row justify-between max-w-[1250px] m-auto md:mt-5 p-5 ">
         {footerLinks.map((footerLink, index)=>
           <div 
