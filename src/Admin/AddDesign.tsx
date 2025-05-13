@@ -1,0 +1,280 @@
+import { ArrowLeft, X, UploadCloudIcon } from "lucide-react";
+import { onBackProps } from "../Data/Types";
+import { useState,useRef } from "react";
+import { motion } from "framer-motion";
+
+const AddDesign = ({ onBack }: onBackProps) => {
+  const [status, setStatus] = useState<string>("Status");
+  const [showStatusDropDown, setShowStatusDropDown] = useState<boolean>(false);
+  const statusValues = ["Publish", "Draft"];
+  const [keyFeatures, setKeyFeatures] = useState<string[]>([]);
+  const [featureInput, setFeatureInput] = useState<string>("");
+  const [packages, setPackages] =useState<string[]>([])
+  const [packagesInput, setPackagesInput] =  useState<string>('')
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [images,setImages] = useState<File[]>([])
+
+  const handleSelect = (value: string) => {
+    setStatus(value);
+    setShowStatusDropDown(false);
+  };
+
+  const handleClick =()=>{
+    fileInputRef.current?.click()
+  }
+
+  const handleImageAdd=(e: React.ChangeEvent<HTMLInputElement>)=>{
+    const selectedImage = e.target.files
+
+    if(selectedImage){
+      const filesArray = Array.from(selectedImage) as File[]
+      setImages((prev) => [...prev,...filesArray]);
+    }
+  }
+
+  const removeImage =(id:number)=>{
+    setImages((prev)=> prev.filter((_,i)=> i !== id))
+  }
+
+  const handleAddFeature = (e: React.KeyboardEvent<HTMLInputElement>) => {
+    if (e.key === "Enter" && featureInput.trim() !== "") {
+      e.preventDefault()
+      if (!keyFeatures.includes(featureInput.trim())) {
+        setKeyFeatures((prev) => [...prev, featureInput.trim()]);
+      }
+      setFeatureInput("");
+    }
+  };
+
+  const handleAddPackage =(e: React.KeyboardEvent<HTMLInputElement>)=>{
+    if(e.key === 'Enter' && packagesInput.trim() !== ''){
+      if(!packages.includes(packagesInput.trim())){
+        setPackages((prev)=> [...prev, packagesInput.trim()])
+      }
+      setPackagesInput('')
+    }
+  }
+
+  const RemoveKeyfeatures =(id: number)=>{
+    setKeyFeatures((prev)=> prev.filter((_,i)=> i !== id))
+  }
+
+  const RemovePackage =(id: number)=>{
+    setPackages((prev)=> prev.filter((_,i)=> i !== id))
+  }
+  return (
+    <div className="bg-softCream w-full p-10 min-h-screen">
+      <div className="flex flex-row justify-between">
+        <h1 className="font-bold text-2xl mb-5">Add New Design</h1>
+        <p
+          className="flex flex-row gap-2 bg-black text-white justify-center items-center w-40 h-10 rounded cursor-pointer hover:bg-gray-700 text-sm"
+          onClick={onBack}
+        >
+          <span>
+            <ArrowLeft />
+          </span>
+          Go Back
+        </p>
+      </div>
+
+      <form
+        action=""
+        className="flex flex-row p-5 gap-10 rounded border-2 border-lightGray/40"
+      >
+        <div className="flex flex-col gap-3 w-1/2">
+          {/* Design Title */}
+          <div className="flex flex-col gap-1">
+            <label htmlFor="" className="text-[12px] font-medium">
+              Design Title
+            </label>
+            <input
+              type="text"
+              className="text-[12px] border-[1px] border-lightGray/30 outline-none p-2 pl-3 rounded focus:ring-1 focus:ring-lightGray"
+              placeholder="Enter Design Title"
+            />
+          </div>
+          {/* Short Description */}
+          <div className="flex flex-col gap-1">
+            <label htmlFor="" className="text-[12px] font-medium">
+              Short Description
+            </label>
+            <textarea
+              className="text-[12px] h-20 resize-none border-[1px] border-lightGray/30 outline-none p-1 pl-3 rounded focus:ring-1 focus:ring-lightGray"
+              placeholder="Brief Description of Design"
+            />
+          </div>
+          {/* Full Description */}
+          <div className="flex flex-col gap-1">
+            <label htmlFor="" className="text-[12px] font-medium">
+              Full Description
+            </label>
+            <textarea
+              className="text-[12px] h-36 border-[1px] resize-none border-lightGray/30 outline-none p-1 pl-3 rounded focus:ring-1 focus:ring-lightGray"
+              placeholder="Detailed Description of Design"
+            />
+          </div>
+          {/* Add Tag */}
+          <div className="flex flex-col gap-1">
+            <label htmlFor="" className="text-[12px] font-medium">
+              Tags
+            </label>
+            <input
+              type="text"
+              className="text-[12px] border-[1px] border-lightGray/30 outline-none p-2 pl-3 rounded focus:ring-1 focus:ring-lightGray"
+              placeholder="Add Tag(Press enter to add)"
+            />
+            <p className="text-[12px] font-normal text-lightGray">
+              Press Enter to add a tag. Tags help customers find your designs.
+            </p>
+          </div>
+          {/* Number of Bedrooms */}
+          <div className="flex flex-col gap-1">
+            <label htmlFor="" className="text-[12px] font-medium">
+              Number of Rooms
+            </label>
+            <input
+              type="text"
+              className="text-[12px] border-[1px] border-lightGray/30 outline-none p-2 pl-3 rounded focus:ring-1 focus:ring-lightGray"
+              placeholder="Add Tag number of Rooms"
+            />
+          </div>
+          {/* Status of the Post */}
+          <div className="flex flex-col gap-1">
+            <label htmlFor="" className="text-[12px] font-medium">
+              Status
+            </label>
+            <input
+              value={status}
+              readOnly
+              className="text-[12px] border-[1px] border-lightGray/30 outline-none p-1 pl-3 rounded focus:ring-1 focus:ring-lightGray relative"
+              onClick={() => setShowStatusDropDown((prev) => !prev)}
+            />
+            {showStatusDropDown && (
+              <div className="flex flex-col w-96 p-3 rounded border-[1px] border-lightGray/40 absolute bg-softCream -bottom-[105px]">
+                {statusValues.map((statusValue, index) => (
+                  <motion.div
+                    key={index}
+                    initial={{ opacity: 0, y: -20 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    transition={{ duration: 0.5, ease: "easeInOut" }}
+                    onClick={() => handleSelect(statusValue)}
+                    className="cursor-pointer "
+                  >
+                    <p>{statusValue}</p>
+                  </motion.div>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+
+        <div className="flex flex-col gap-3 w-1/2">
+          {/* Design Price */}
+          <div className="flex flex-col gap-1">
+            <label htmlFor="" className="text-[12px] font-medium">
+              Price
+            </label>
+            <input
+              type="text"
+              className="text-[12px] border-[1px] border-lightGray/30 outline-none p-2 pl-3 rounded focus:ring-1 focus:ring-lightGray"
+              placeholder="Enter Price"
+            />
+          </div>
+
+          {/* Images */}
+          <div className="flex flex-col gap-2">
+          <div className="flex flex-row gap-2">
+            {images.map((image, index)=>
+            <div 
+            key={index}
+            className="flex flex-row flex-wrap gap-2">
+              <h1 className="border-[1px] border-teal/30 text-[11px] font-bold p-1 rounded flex flex-row items-center gap-2 cursor-pointer hover:bg-lightGray/10">
+                {image.name}
+                <span onClick={()=>removeImage(index)}
+                className="hover:bg-lightGray/40 w-5 h-5 rounded-full p-1"
+                >
+                  <X size={12}/>
+                </span>
+              </h1>
+            </div>
+            )}
+            </div>
+            <div 
+            className="flex flex-col w-full h-40 border-[1px] border-lightGray/30 rounded justify-center items-center hover:bg-lightGray/10 cursor-pointer"
+            onClick={handleClick}
+            >
+              <UploadCloudIcon />
+              <h1>Upload Images</h1>
+            </div>
+            <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            onChange={handleImageAdd}
+            />
+          </div>
+          {/* Key Feature */}
+          <div className="flex flex-col gap-2">
+            <label htmlFor="" className="text-[12px] font-medium">
+              Add Features
+            </label>
+            <div className="flex flex-row flex-wrap gap-2">
+              {keyFeatures.map((keyFeature, index) => (
+              <div key={index}>
+                <h1 className="border-[1px] border-teal/30 text-[11px] font-bold p-1 rounded flex flex-row items-center gap-2 cursor-pointer hover:bg-lightGray/10">
+                  {keyFeature}
+                  <span>
+                    <X size={12} 
+                    onClick={()=>RemoveKeyfeatures(index)}
+                    className="hover:bg-lightGray/40 w-5 h-5 rounded-full p-1"
+                    />
+                  </span>
+                </h1>
+              </div>
+            ))}
+            </div>
+            <input
+              type="text"
+              value={featureInput}
+              onChange={(e) => setFeatureInput(e.target.value)}
+              className="text-[12px] border-[1px] border-lightGray/30 outline-none p-2 pl-3 rounded focus:ring-1 focus:ring-lightGray"
+              placeholder="Press enter to add Features"
+              onKeyDown={handleAddFeature}
+            />
+          </div>
+          {/* Add Packages */}
+          <div className="flex flex-col gap-2">
+            <label htmlFor="" className="text-[12px] font-medium">
+              Add Packages
+            </label>
+            <div className="flex flex-row flex-wrap gap-2">
+              {packages.map((pack, index)=>
+              <h1 
+              key={index}
+              className="border-[1px] border-teal/30 text-[11px] font-bold p-1 rounded flex flex-row items-center gap-2 cursor-pointer hover:bg-lightGray/10">
+                {pack}
+                <span>
+                  <X size={12} 
+                  onClick={()=> RemovePackage(index)}
+                  />
+                </span>
+              </h1>
+              )}
+            </div>
+            <input
+              type="text"
+              value={packagesInput}
+              onChange={(e)=>setPackagesInput(e.target.value)}
+              onKeyDown={handleAddPackage}
+              className="text-[12px] border-[1px] border-lightGray/30 outline-none p-2 pl-3 rounded focus:ring-1 focus:ring-lightGray"
+              placeholder="Press Enter to add Package"
+            />
+          </div>
+        </div>
+      </form>
+    </div>
+  );
+};
+
+export default AddDesign;

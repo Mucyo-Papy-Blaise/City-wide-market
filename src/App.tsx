@@ -7,7 +7,7 @@ import ArchitecturePage from './Pages/ArchitecturePage';
 import ViewMore from './Components/ViewMore';
 import { CartItem } from './Data/Types';
 import ContactPage from './Pages/ContactPage';
-import FullDashboard from './Admin/FullDashboard';
+import FullDashboard from './Admin/DashboardLayOut';
 
 const App:React.FC = () => {
 
