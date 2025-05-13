@@ -1,6 +1,6 @@
 import { ArrowLeft, X, UploadCloudIcon } from "lucide-react";
 import { onBackProps } from "../Data/Types";
-import { useState } from "react";
+import { useState,useRef } from "react";
 import { motion } from "framer-motion";
 
 const AddDesign = ({ onBack }: onBackProps) => {
@@ -11,11 +11,30 @@ const AddDesign = ({ onBack }: onBackProps) => {
   const [featureInput, setFeatureInput] = useState<string>("");
   const [packages, setPackages] =useState<string[]>([])
   const [packagesInput, setPackagesInput] =  useState<string>('')
+  const fileInputRef = useRef<HTMLInputElement>(null)
+  const [images,setImages] = useState<File[]>([])
 
   const handleSelect = (value: string) => {
     setStatus(value);
     setShowStatusDropDown(false);
   };
+
+  const handleClick =()=>{
+    fileInputRef.current?.click()
+  }
+
+  const handleImageAdd=(e: React.ChangeEvent<HTMLInputElement>)=>{
+    const selectedImage = e.target.files
+
+    if(selectedImage){
+      const filesArray = Array.from(selectedImage) as File[]
+      setImages((prev) => [...prev,...filesArray]);
+    }
+  }
+
+  const removeImage =(id:number)=>{
+    setImages((prev)=> prev.filter((_,i)=> i !== id))
+  }
 
   const handleAddFeature = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter" && featureInput.trim() !== "") {
@@ -164,18 +183,36 @@ const AddDesign = ({ onBack }: onBackProps) => {
 
           {/* Images */}
           <div className="flex flex-col gap-2">
-            <div className="flex flex-row flex-wrap gap-2">
+          <div className="flex flex-row gap-2">
+            {images.map((image, index)=>
+            <div 
+            key={index}
+            className="flex flex-row flex-wrap gap-2">
               <h1 className="border-[1px] border-teal/30 text-[11px] font-bold p-1 rounded flex flex-row items-center gap-2 cursor-pointer hover:bg-lightGray/10">
-                Image 1
-                <span>
-                  <X size={12} />
+                {image.name}
+                <span onClick={()=>removeImage(index)}
+                className="hover:bg-lightGray/40 w-5 h-5 rounded-full p-1"
+                >
+                  <X size={12}/>
                 </span>
               </h1>
             </div>
-            <div className="flex flex-col w-full h-40 border-[1px] border-lightGray/30 rounded justify-center items-center hover:bg-lightGray/10 cursor-pointer">
+            )}
+            </div>
+            <div 
+            className="flex flex-col w-full h-40 border-[1px] border-lightGray/30 rounded justify-center items-center hover:bg-lightGray/10 cursor-pointer"
+            onClick={handleClick}
+            >
               <UploadCloudIcon />
               <h1>Upload Images</h1>
             </div>
+            <input
+            type="file"
+            accept="image/*"
+            ref={fileInputRef}
+            style={{ display: "none" }}
+            onChange={handleImageAdd}
+            />
           </div>
           {/* Key Feature */}
           <div className="flex flex-col gap-2">
